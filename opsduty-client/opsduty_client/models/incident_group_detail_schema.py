@@ -9,6 +9,7 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.incident_group_detail_note_schema import IncidentGroupDetailNoteSchema
+    from ..models.incident_group_service_schema import IncidentGroupServiceSchema
 
 
 T = TypeVar("T", bound="IncidentGroupDetailSchema")
@@ -19,6 +20,7 @@ class IncidentGroupDetailSchema:
     """
     Attributes:
         status (IncidentGroupStatus):
+        service (Union['IncidentGroupServiceSchema', None]):
         notes (List['IncidentGroupDetailNoteSchema']):
         created_at (datetime.datetime):
         id (Union[None, Unset, int]):
@@ -31,6 +33,7 @@ class IncidentGroupDetailSchema:
     """
 
     status: IncidentGroupStatus
+    service: Union["IncidentGroupServiceSchema", None]
     notes: List["IncidentGroupDetailNoteSchema"]
     created_at: datetime.datetime
     id: Union[None, Unset, int] = UNSET
@@ -43,7 +46,15 @@ class IncidentGroupDetailSchema:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        from ..models.incident_group_service_schema import IncidentGroupServiceSchema
+
         status = self.status.value
+
+        service: Union[Dict[str, Any], None]
+        if isinstance(self.service, IncidentGroupServiceSchema):
+            service = self.service.to_dict()
+        else:
+            service = self.service
 
         notes = []
         for notes_item_data in self.notes:
@@ -103,6 +114,7 @@ class IncidentGroupDetailSchema:
         field_dict.update(
             {
                 "status": status,
+                "service": service,
                 "notes": notes,
                 "created_at": created_at,
             }
@@ -127,9 +139,25 @@ class IncidentGroupDetailSchema:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         from ..models.incident_group_detail_note_schema import IncidentGroupDetailNoteSchema
+        from ..models.incident_group_service_schema import IncidentGroupServiceSchema
 
         d = src_dict.copy()
         status = IncidentGroupStatus(d.pop("status"))
+
+        def _parse_service(data: object) -> Union["IncidentGroupServiceSchema", None]:
+            if data is None:
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                service_type_0 = IncidentGroupServiceSchema.from_dict(data)
+
+                return service_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union["IncidentGroupServiceSchema", None], data)
+
+        service = _parse_service(d.pop("service"))
 
         notes = []
         _notes = d.pop("notes")
@@ -230,6 +258,7 @@ class IncidentGroupDetailSchema:
 
         incident_group_detail_schema = cls(
             status=status,
+            service=service,
             notes=notes,
             created_at=created_at,
             id=id,

@@ -4,6 +4,7 @@ from .incident_group_detail_note_schema import IncidentGroupDetailNoteSchema
 from .incident_group_detail_schema import IncidentGroupDetailSchema
 from .incident_group_filter import IncidentGroupFilter
 from .incident_group_schema import IncidentGroupSchema
+from .incident_group_service_schema import IncidentGroupServiceSchema
 from .incident_group_status import IncidentGroupStatus
 from .input_ import Input
 from .page_info import PageInfo
@@ -28,6 +29,7 @@ __all__ = (
     "IncidentGroupDetailSchema",
     "IncidentGroupFilter",
     "IncidentGroupSchema",
+    "IncidentGroupServiceSchema",
     "IncidentGroupStatus",
     "Input",
     "PagedIncidentGroupSchema",
