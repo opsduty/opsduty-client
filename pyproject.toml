@@ -1,0 +1,72 @@
+[tool.poetry]
+name = "opsduty-api-v1"
+version = "0.0.0"
+description = ""
+authors = ["Eirik Martiniussen Sylliaas <eirik@sylliaas.no>"]
+license = "MIT"
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+openapi-python-client = "^0.21.4"
+pytest = "^8.3.2"
+pytest-asyncio = "^0.24.0"
+ruff = "^0.6.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 255
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "migrations",
+    "node_modules",
+]
+
+[tool.ruff.lint]
+select = [
+    # Regular flake8 rules
+    "C", "E", "F", "W",
+    # flake8-bugbear rules
+    "B",
+    # Import sorting rules (isort replacement)
+    "I",
+    # Pylint rules
+    "PLC", "PLE", "PLR", "PLW",
+    # Do not include small Ruff rules (including useless noqa) yet
+    # "RUF",
+]
+ignore = [
+    # PLR0912 Too many branches
+    "PLR0912",
+    # C901 Too complex
+    "C901",
+    # PLR2004 Magic value
+    "PLR2004",
+    # PLR0915 Too many statements
+    "PLR0915",
+    # PLR0911 Too many return statements
+    "PLR0911",
+]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "parents"
+
+[tool.ruff.lint.pylint]
+max-args = 12
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]
+
+# --- pytest-asyncio settings
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
