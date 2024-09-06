@@ -71,6 +71,11 @@ lint-ruff: .venv | $(BASE) ; $(info $(M) running ruff…) @ ## Run ruff linter
 lint-ruff-format: .venv | $(BASE) ; $(info $(M) running ruff format…) @ ## Run ruff format linter
 	$Q cd $(BASE) && $(POETRY) run ruff format --check tests opsduty-client
 
+# Release
+.PHONY: release
+release: .venv | $(BASE) ; $(info $(M) running release…) @ ## Run poetry release
+	$Q cd $(BASE)/opsduty-client && $(POETRY) publish --build --username=__token__ --password=$(PYPI_TOKEN)
+
 # Dependency management
 
 .venv: pyproject.toml poetry.lock | $(BASE) ; $(info $(M) retrieving dependencies…) @ ## Install python dependencies
