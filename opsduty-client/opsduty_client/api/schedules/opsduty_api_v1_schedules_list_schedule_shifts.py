@@ -7,7 +7,7 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.schedule_shift_schema import ScheduleShiftSchema
-from ...types import UNSET, Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
@@ -15,6 +15,7 @@ def _get_kwargs(
     *,
     datetime_start: datetime.datetime,
     datetime_end: datetime.datetime,
+    overflow: Union[Unset, bool] = True,
 ) -> Dict[str, Any]:
     params: Dict[str, Any] = {}
 
@@ -23,6 +24,8 @@ def _get_kwargs(
 
     json_datetime_end = datetime_end.isoformat()
     params["datetime_end"] = json_datetime_end
+
+    params["overflow"] = overflow
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -68,6 +71,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     datetime_start: datetime.datetime,
     datetime_end: datetime.datetime,
+    overflow: Union[Unset, bool] = True,
 ) -> Response[List["ScheduleShiftSchema"]]:
     """List Schedule Shifts
 
@@ -75,6 +79,7 @@ def sync_detailed(
         schedule_id (int):
         datetime_start (datetime.datetime):
         datetime_end (datetime.datetime):
+        overflow (Union[Unset, bool]):  Default: True.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -88,6 +93,7 @@ def sync_detailed(
         schedule_id=schedule_id,
         datetime_start=datetime_start,
         datetime_end=datetime_end,
+        overflow=overflow,
     )
 
     response = client.get_httpx_client().request(
@@ -103,6 +109,7 @@ def sync(
     client: AuthenticatedClient,
     datetime_start: datetime.datetime,
     datetime_end: datetime.datetime,
+    overflow: Union[Unset, bool] = True,
 ) -> Optional[List["ScheduleShiftSchema"]]:
     """List Schedule Shifts
 
@@ -110,6 +117,7 @@ def sync(
         schedule_id (int):
         datetime_start (datetime.datetime):
         datetime_end (datetime.datetime):
+        overflow (Union[Unset, bool]):  Default: True.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -124,6 +132,7 @@ def sync(
         client=client,
         datetime_start=datetime_start,
         datetime_end=datetime_end,
+        overflow=overflow,
     ).parsed
 
 
@@ -133,6 +142,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     datetime_start: datetime.datetime,
     datetime_end: datetime.datetime,
+    overflow: Union[Unset, bool] = True,
 ) -> Response[List["ScheduleShiftSchema"]]:
     """List Schedule Shifts
 
@@ -140,6 +150,7 @@ async def asyncio_detailed(
         schedule_id (int):
         datetime_start (datetime.datetime):
         datetime_end (datetime.datetime):
+        overflow (Union[Unset, bool]):  Default: True.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -153,6 +164,7 @@ async def asyncio_detailed(
         schedule_id=schedule_id,
         datetime_start=datetime_start,
         datetime_end=datetime_end,
+        overflow=overflow,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -166,6 +178,7 @@ async def asyncio(
     client: AuthenticatedClient,
     datetime_start: datetime.datetime,
     datetime_end: datetime.datetime,
+    overflow: Union[Unset, bool] = True,
 ) -> Optional[List["ScheduleShiftSchema"]]:
     """List Schedule Shifts
 
@@ -173,6 +186,7 @@ async def asyncio(
         schedule_id (int):
         datetime_start (datetime.datetime):
         datetime_end (datetime.datetime):
+        overflow (Union[Unset, bool]):  Default: True.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -188,5 +202,6 @@ async def asyncio(
             client=client,
             datetime_start=datetime_start,
             datetime_end=datetime_end,
+            overflow=overflow,
         )
     ).parsed
