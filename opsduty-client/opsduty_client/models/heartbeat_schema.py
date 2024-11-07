@@ -23,6 +23,8 @@ class HeartbeatSchema:
         public_primary_key (Union[Unset, str]):
         description (Union[None, Unset, str]):  Default: ''.
         link (Union[None, Unset, str]):
+        incident_urgency (Union[None, Unset, str]):
+        labels (Union[List[Any], None, Unset]):
     """
 
     states: List[Union["CronHeartbeatStateSchema", "IntervalHeartbeatStateSchema"]]
@@ -32,6 +34,8 @@ class HeartbeatSchema:
     public_primary_key: Union[Unset, str] = UNSET
     description: Union[None, Unset, str] = ""
     link: Union[None, Unset, str] = UNSET
+    incident_urgency: Union[None, Unset, str] = UNSET
+    labels: Union[List[Any], None, Unset] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -71,6 +75,21 @@ class HeartbeatSchema:
         else:
             link = self.link
 
+        incident_urgency: Union[None, Unset, str]
+        if isinstance(self.incident_urgency, Unset):
+            incident_urgency = UNSET
+        else:
+            incident_urgency = self.incident_urgency
+
+        labels: Union[List[Any], None, Unset]
+        if isinstance(self.labels, Unset):
+            labels = UNSET
+        elif isinstance(self.labels, list):
+            labels = self.labels
+
+        else:
+            labels = self.labels
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -88,6 +107,10 @@ class HeartbeatSchema:
             field_dict["description"] = description
         if link is not UNSET:
             field_dict["link"] = link
+        if incident_urgency is not UNSET:
+            field_dict["incident_urgency"] = incident_urgency
+        if labels is not UNSET:
+            field_dict["labels"] = labels
 
         return field_dict
 
@@ -153,6 +176,32 @@ class HeartbeatSchema:
 
         link = _parse_link(d.pop("link", UNSET))
 
+        def _parse_incident_urgency(data: object) -> Union[None, Unset, str]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(Union[None, Unset, str], data)
+
+        incident_urgency = _parse_incident_urgency(d.pop("incident_urgency", UNSET))
+
+        def _parse_labels(data: object) -> Union[List[Any], None, Unset]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                labels_type_0 = cast(List[Any], data)
+
+                return labels_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[List[Any], None, Unset], data)
+
+        labels = _parse_labels(d.pop("labels", UNSET))
+
         heartbeat_schema = cls(
             states=states,
             name=name,
@@ -161,6 +210,8 @@ class HeartbeatSchema:
             public_primary_key=public_primary_key,
             description=description,
             link=link,
+            incident_urgency=incident_urgency,
+            labels=labels,
         )
 
         heartbeat_schema.additional_properties = d

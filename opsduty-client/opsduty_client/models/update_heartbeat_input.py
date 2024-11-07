@@ -2,6 +2,9 @@ from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
+from ..models.incident_urgency import IncidentUrgency
+from ..types import UNSET, Unset
+
 T = TypeVar("T", bound="UpdateHeartbeatInput")
 
 
@@ -11,14 +14,18 @@ class UpdateHeartbeatInput:
     Attributes:
         name (str):
         description (str):
-        link (Union[None, str]):
         service (int):
+        link (Union[None, Unset, str]):
+        incident_urgency (Union[IncidentUrgency, None, Unset]):
+        labels (Union[Unset, List[str]]):
     """
 
     name: str
     description: str
-    link: Union[None, str]
     service: int
+    link: Union[None, Unset, str] = UNSET
+    incident_urgency: Union[IncidentUrgency, None, Unset] = UNSET
+    labels: Union[Unset, List[str]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -26,10 +33,25 @@ class UpdateHeartbeatInput:
 
         description = self.description
 
-        link: Union[None, str]
-        link = self.link
-
         service = self.service
+
+        link: Union[None, Unset, str]
+        if isinstance(self.link, Unset):
+            link = UNSET
+        else:
+            link = self.link
+
+        incident_urgency: Union[None, Unset, str]
+        if isinstance(self.incident_urgency, Unset):
+            incident_urgency = UNSET
+        elif isinstance(self.incident_urgency, IncidentUrgency):
+            incident_urgency = self.incident_urgency.value
+        else:
+            incident_urgency = self.incident_urgency
+
+        labels: Union[Unset, List[str]] = UNSET
+        if not isinstance(self.labels, Unset):
+            labels = self.labels
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -37,10 +59,15 @@ class UpdateHeartbeatInput:
             {
                 "name": name,
                 "description": description,
-                "link": link,
                 "service": service,
             }
         )
+        if link is not UNSET:
+            field_dict["link"] = link
+        if incident_urgency is not UNSET:
+            field_dict["incident_urgency"] = incident_urgency
+        if labels is not UNSET:
+            field_dict["labels"] = labels
 
         return field_dict
 
@@ -51,20 +78,43 @@ class UpdateHeartbeatInput:
 
         description = d.pop("description")
 
-        def _parse_link(data: object) -> Union[None, str]:
+        service = d.pop("service")
+
+        def _parse_link(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
-            return cast(Union[None, str], data)
+            if isinstance(data, Unset):
+                return data
+            return cast(Union[None, Unset, str], data)
 
-        link = _parse_link(d.pop("link"))
+        link = _parse_link(d.pop("link", UNSET))
 
-        service = d.pop("service")
+        def _parse_incident_urgency(data: object) -> Union[IncidentUrgency, None, Unset]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                incident_urgency_type_0 = IncidentUrgency(data)
+
+                return incident_urgency_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[IncidentUrgency, None, Unset], data)
+
+        incident_urgency = _parse_incident_urgency(d.pop("incident_urgency", UNSET))
+
+        labels = cast(List[str], d.pop("labels", UNSET))
 
         update_heartbeat_input = cls(
             name=name,
             description=description,
-            link=link,
             service=service,
+            link=link,
+            incident_urgency=incident_urgency,
+            labels=labels,
         )
 
         update_heartbeat_input.additional_properties = d
