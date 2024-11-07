@@ -13,6 +13,7 @@ from .incident_group_filter import IncidentGroupFilter
 from .incident_group_schema import IncidentGroupSchema
 from .incident_group_service_schema import IncidentGroupServiceSchema
 from .incident_group_status import IncidentGroupStatus
+from .incident_urgency import IncidentUrgency
 from .input_ import Input
 from .interval_heartbeat_state_schema import IntervalHeartbeatStateSchema
 from .interval_heartbeat_state_schema_type import IntervalHeartbeatStateSchemaType
@@ -50,6 +51,7 @@ __all__ = (
     "IncidentGroupSchema",
     "IncidentGroupServiceSchema",
     "IncidentGroupStatus",
+    "IncidentUrgency",
     "Input",
     "IntervalHeartbeatStateSchema",
     "IntervalHeartbeatStateSchemaType",
