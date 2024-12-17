@@ -1,4 +1,4 @@
-# opsduty-api-v1
+# opsduty-client
 
 > Python API client generator.
 

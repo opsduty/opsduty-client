@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "opsduty-api-v1"
+name = "opsduty-client"
 version = "0.0.0"
 description = ""
 authors = ["Eirik Martiniussen Sylliaas <eirik@sylliaas.no>"]

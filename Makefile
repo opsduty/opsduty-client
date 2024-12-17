@@ -1,4 +1,4 @@
-PACKAGE      = opsduty-api-v1
+PACKAGE      = opsduty-client
 BASE  	     = $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 POETRY      = poetry
