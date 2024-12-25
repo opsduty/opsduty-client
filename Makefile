@@ -23,7 +23,7 @@ test: test-pytest | $(BASE) ; @ ## Run tests
 	$Q
 
 .PHONY: lint
-lint: lint-ruff-format lint-ruff  | $(BASE) ; @ ## Run linters
+lint: lint-ruff-format lint-ruff lint-mypy | $(BASE) ; @ ## Run linters
 	$Q
 
 .PHONY: fix
@@ -70,6 +70,10 @@ lint-ruff: .venv | $(BASE) ; $(info $(M) running ruff…) @ ## Run ruff linter
 .PHONY: lint-ruff-format
 lint-ruff-format: .venv | $(BASE) ; $(info $(M) running ruff format…) @ ## Run ruff format linter
 	$Q cd $(BASE) && $(POETRY) run ruff format --check tests opsduty-client
+
+.PHONY: lint-mypy
+lint-mypy: .venv | $(BASE) ; $(info $(M) running mypy…) @ ## Run mypy linter
+	$Q cd $(BASE) && $(POETRY) run mypy tests opsduty-client
 
 # Release
 .PHONY: release
