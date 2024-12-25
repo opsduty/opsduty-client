@@ -42,7 +42,6 @@ generate-api-client: .venv | $(BASE) ; $(info $(M) running api generator…) @ #
 		--custom-template-path templates/ \
 		--config config.yml
 	$Q cd $(BASE) && make fix
-	$Q cd $(BASE) && make fix
 
 # Tests
 
