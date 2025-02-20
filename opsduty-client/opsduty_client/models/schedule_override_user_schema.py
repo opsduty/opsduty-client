@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
@@ -19,9 +19,9 @@ class ScheduleOverrideUserSchema:
     id: Union[None, Unset, int] = UNSET
     first_name: Union[None, Unset, str] = UNSET
     last_name: Union[None, Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         id: Union[None, Unset, int]
         if isinstance(self.id, Unset):
             id = UNSET
@@ -40,7 +40,7 @@ class ScheduleOverrideUserSchema:
         else:
             last_name = self.last_name
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if id is not UNSET:
@@ -53,7 +53,7 @@ class ScheduleOverrideUserSchema:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
         d = src_dict.copy()
 
         def _parse_id(data: object) -> Union[None, Unset, int]:
@@ -93,7 +93,7 @@ class ScheduleOverrideUserSchema:
         return schedule_override_user_schema
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

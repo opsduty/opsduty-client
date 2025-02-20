@@ -3,7 +3,6 @@
 from .create_heartbeat_input import CreateHeartbeatInput
 from .create_heartbeat_state_input import CreateHeartbeatStateInput
 from .cron_heartbeat_state_schema import CronHeartbeatStateSchema
-from .cron_heartbeat_state_schema_type import CronHeartbeatStateSchemaType
 from .heart_beat_filter import HeartBeatFilter
 from .heartbeat_schema import HeartbeatSchema
 from .heartbeat_type import HeartbeatType
@@ -16,7 +15,6 @@ from .incident_group_status import IncidentGroupStatus
 from .incident_urgency import IncidentUrgency
 from .input_ import Input
 from .interval_heartbeat_state_schema import IntervalHeartbeatStateSchema
-from .interval_heartbeat_state_schema_type import IntervalHeartbeatStateSchemaType
 from .page_info import PageInfo
 from .paged_heartbeat_schema import PagedHeartbeatSchema
 from .paged_incident_group_schema import PagedIncidentGroupSchema
@@ -41,7 +39,6 @@ __all__ = (
     "CreateHeartbeatInput",
     "CreateHeartbeatStateInput",
     "CronHeartbeatStateSchema",
-    "CronHeartbeatStateSchemaType",
     "HeartBeatFilter",
     "HeartbeatSchema",
     "HeartbeatType",
@@ -54,7 +51,6 @@ __all__ = (
     "IncidentUrgency",
     "Input",
     "IntervalHeartbeatStateSchema",
-    "IntervalHeartbeatStateSchemaType",
     "PagedHeartbeatSchema",
     "PagedIncidentGroupSchema",
     "PagedScheduleOverrideSchema",

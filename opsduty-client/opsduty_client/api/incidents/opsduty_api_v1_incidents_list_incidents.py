@@ -1,6 +1,6 @@
 import datetime
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import Any, Optional, Union
 
 import httpx
 
@@ -17,8 +17,8 @@ def _get_kwargs(
     page_size: Union[None, Unset, int] = UNSET,
     before: Union[None, Unset, str] = UNSET,
     after: Union[None, Unset, str] = UNSET,
-) -> Dict[str, Any]:
-    params: Dict[str, Any] = {}
+) -> dict[str, Any]:
+    params: dict[str, Any] = {}
 
     json_since: Union[None, Unset, str]
     if isinstance(since, Unset):
@@ -61,7 +61,7 @@ def _get_kwargs(
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    _kwargs: Dict[str, Any] = {
+    _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/api/v1/incidents/",
         "params": params,
@@ -71,7 +71,7 @@ def _get_kwargs(
 
 
 def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[PagedIncidentGroupSchema]:
-    if response.status_code == HTTPStatus.OK:
+    if response.status_code == 200:
         response_200 = PagedIncidentGroupSchema.from_dict(response.json())
 
         return response_200

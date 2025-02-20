@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
@@ -14,7 +14,7 @@ class CreateHeartbeatStateInput:
     Attributes:
         heartbeat_id (int):
         environment (str):
-        type (HeartbeatType):
+        type_ (HeartbeatType):
         timeout_seconds (int):
         muted (bool):
         resolve_incident (bool):
@@ -25,21 +25,21 @@ class CreateHeartbeatStateInput:
 
     heartbeat_id: int
     environment: str
-    type: HeartbeatType
+    type_: HeartbeatType
     timeout_seconds: int
     muted: bool
     resolve_incident: bool
     cron_expression: Union[None, Unset, str] = UNSET
     cron_timezone: Union[None, Unset, str] = UNSET
     interval_seconds: Union[None, Unset, int] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         heartbeat_id = self.heartbeat_id
 
         environment = self.environment
 
-        type = self.type.value
+        type_ = self.type_.value
 
         timeout_seconds = self.timeout_seconds
 
@@ -65,13 +65,13 @@ class CreateHeartbeatStateInput:
         else:
             interval_seconds = self.interval_seconds
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "heartbeat_id": heartbeat_id,
                 "environment": environment,
-                "type": type,
+                "type": type_,
                 "timeout_seconds": timeout_seconds,
                 "muted": muted,
                 "resolve_incident": resolve_incident,
@@ -87,13 +87,13 @@ class CreateHeartbeatStateInput:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
         d = src_dict.copy()
         heartbeat_id = d.pop("heartbeat_id")
 
         environment = d.pop("environment")
 
-        type = HeartbeatType(d.pop("type"))
+        type_ = HeartbeatType(d.pop("type"))
 
         timeout_seconds = d.pop("timeout_seconds")
 
@@ -131,7 +131,7 @@ class CreateHeartbeatStateInput:
         create_heartbeat_state_input = cls(
             heartbeat_id=heartbeat_id,
             environment=environment,
-            type=type,
+            type_=type_,
             timeout_seconds=timeout_seconds,
             muted=muted,
             resolve_incident=resolve_incident,
@@ -144,7 +144,7 @@ class CreateHeartbeatStateInput:
         return create_heartbeat_state_input
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

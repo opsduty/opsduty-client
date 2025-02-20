@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import Any, Optional, Union
 
 import httpx
 
@@ -12,8 +12,8 @@ def _get_kwargs(
     service_id: int,
     name: str,
     environment: str,
-) -> Dict[str, Any]:
-    _kwargs: Dict[str, Any] = {
+) -> dict[str, Any]:
+    _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/api/v1/heartbeats/checkin/{service_id}/{name}/{environment}".format(
             service_id=service_id,
@@ -26,7 +26,7 @@ def _get_kwargs(
 
 
 def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Any]:
-    if response.status_code == HTTPStatus.OK:
+    if response.status_code == 200:
         return None
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)

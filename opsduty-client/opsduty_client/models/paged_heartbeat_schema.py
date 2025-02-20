@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
 
@@ -14,15 +14,15 @@ T = TypeVar("T", bound="PagedHeartbeatSchema")
 class PagedHeartbeatSchema:
     """
     Attributes:
-        items (List['HeartbeatSchema']):
+        items (list['HeartbeatSchema']):
         page_info (PageInfo):
     """
 
-    items: List["HeartbeatSchema"]
+    items: list["HeartbeatSchema"]
     page_info: "PageInfo"
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         items = []
         for items_item_data in self.items:
             items_item = items_item_data.to_dict()
@@ -30,7 +30,7 @@ class PagedHeartbeatSchema:
 
         page_info = self.page_info.to_dict()
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -42,7 +42,7 @@ class PagedHeartbeatSchema:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
         from ..models.heartbeat_schema import HeartbeatSchema
         from ..models.page_info import PageInfo
 
@@ -65,7 +65,7 @@ class PagedHeartbeatSchema:
         return paged_heartbeat_schema
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

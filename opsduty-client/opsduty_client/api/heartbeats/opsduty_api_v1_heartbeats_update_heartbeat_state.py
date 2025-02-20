@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import Any, Optional, Union
 
 import httpx
 
@@ -15,10 +15,10 @@ def _get_kwargs(
     heartbeat_state_id: int,
     *,
     body: UpdateHeartbeatStateInput,
-) -> Dict[str, Any]:
-    headers: Dict[str, Any] = {}
+) -> dict[str, Any]:
+    headers: dict[str, Any] = {}
 
-    _kwargs: Dict[str, Any] = {
+    _kwargs: dict[str, Any] = {
         "method": "put",
         "url": "/api/v1/heartbeats/states/{heartbeat_state_id}/".format(
             heartbeat_state_id=heartbeat_state_id,
@@ -35,7 +35,7 @@ def _get_kwargs(
 
 
 def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Union["CronHeartbeatStateSchema", "IntervalHeartbeatStateSchema"]]:
-    if response.status_code == HTTPStatus.OK:
+    if response.status_code == 200:
 
         def _parse_response_200(data: object) -> Union["CronHeartbeatStateSchema", "IntervalHeartbeatStateSchema"]:
             try:

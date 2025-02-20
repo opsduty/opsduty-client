@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
 from dateutil.parser import isoparse
@@ -17,15 +17,15 @@ class ScheduleShiftSchema:
     Attributes:
         start (datetime.datetime):
         end (datetime.datetime):
-        users (List['ScheduleShiftUserSchema']):
+        users (list['ScheduleShiftUserSchema']):
     """
 
     start: datetime.datetime
     end: datetime.datetime
-    users: List["ScheduleShiftUserSchema"]
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    users: list["ScheduleShiftUserSchema"]
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         start = self.start.isoformat()
 
         end = self.end.isoformat()
@@ -35,7 +35,7 @@ class ScheduleShiftSchema:
             users_item = users_item_data.to_dict()
             users.append(users_item)
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -48,7 +48,7 @@ class ScheduleShiftSchema:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
         from ..models.schedule_shift_user_schema import ScheduleShiftUserSchema
 
         d = src_dict.copy()
@@ -73,7 +73,7 @@ class ScheduleShiftSchema:
         return schedule_shift_schema
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

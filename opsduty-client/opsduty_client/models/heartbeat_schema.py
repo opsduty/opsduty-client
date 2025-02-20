@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
+from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
@@ -16,7 +16,7 @@ T = TypeVar("T", bound="HeartbeatSchema")
 class HeartbeatSchema:
     """
     Attributes:
-        states (List[Union['CronHeartbeatStateSchema', 'IntervalHeartbeatStateSchema']]):
+        states (list[Union['CronHeartbeatStateSchema', 'IntervalHeartbeatStateSchema']]):
         name (str):
         service (int):
         id (Union[None, Unset, int]):
@@ -24,10 +24,10 @@ class HeartbeatSchema:
         description (Union[None, Unset, str]):  Default: ''.
         link (Union[None, Unset, str]):
         incident_urgency (Union[None, Unset, str]):
-        labels (Union[List[Any], None, Unset]):
+        labels (Union[None, Unset, list[Any]]):
     """
 
-    states: List[Union["CronHeartbeatStateSchema", "IntervalHeartbeatStateSchema"]]
+    states: list[Union["CronHeartbeatStateSchema", "IntervalHeartbeatStateSchema"]]
     name: str
     service: int
     id: Union[None, Unset, int] = UNSET
@@ -35,15 +35,15 @@ class HeartbeatSchema:
     description: Union[None, Unset, str] = ""
     link: Union[None, Unset, str] = UNSET
     incident_urgency: Union[None, Unset, str] = UNSET
-    labels: Union[List[Any], None, Unset] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    labels: Union[None, Unset, list[Any]] = UNSET
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         from ..models.cron_heartbeat_state_schema import CronHeartbeatStateSchema
 
         states = []
         for states_item_data in self.states:
-            states_item: Dict[str, Any]
+            states_item: dict[str, Any]
             if isinstance(states_item_data, CronHeartbeatStateSchema):
                 states_item = states_item_data.to_dict()
             else:
@@ -81,7 +81,7 @@ class HeartbeatSchema:
         else:
             incident_urgency = self.incident_urgency
 
-        labels: Union[List[Any], None, Unset]
+        labels: Union[None, Unset, list[Any]]
         if isinstance(self.labels, Unset):
             labels = UNSET
         elif isinstance(self.labels, list):
@@ -90,7 +90,7 @@ class HeartbeatSchema:
         else:
             labels = self.labels
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -115,7 +115,7 @@ class HeartbeatSchema:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
         from ..models.cron_heartbeat_state_schema import CronHeartbeatStateSchema
         from ..models.interval_heartbeat_state_schema import IntervalHeartbeatStateSchema
 
@@ -185,7 +185,7 @@ class HeartbeatSchema:
 
         incident_urgency = _parse_incident_urgency(d.pop("incident_urgency", UNSET))
 
-        def _parse_labels(data: object) -> Union[List[Any], None, Unset]:
+        def _parse_labels(data: object) -> Union[None, Unset, list[Any]]:
             if data is None:
                 return data
             if isinstance(data, Unset):
@@ -193,12 +193,12 @@ class HeartbeatSchema:
             try:
                 if not isinstance(data, list):
                     raise TypeError()
-                labels_type_0 = cast(List[Any], data)
+                labels_type_0 = cast(list[Any], data)
 
                 return labels_type_0
             except:  # noqa: E722
                 pass
-            return cast(Union[List[Any], None, Unset], data)
+            return cast(Union[None, Unset, list[Any]], data)
 
         labels = _parse_labels(d.pop("labels", UNSET))
 
@@ -218,7 +218,7 @@ class HeartbeatSchema:
         return heartbeat_schema
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

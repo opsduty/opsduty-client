@@ -1,8 +1,7 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from typing import Any, Literal, TypeVar, Union, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
-from ..models.interval_heartbeat_state_schema_type import IntervalHeartbeatStateSchemaType
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="IntervalHeartbeatStateSchema")
@@ -12,7 +11,7 @@ T = TypeVar("T", bound="IntervalHeartbeatStateSchema")
 class IntervalHeartbeatStateSchema:
     """
     Attributes:
-        type (IntervalHeartbeatStateSchemaType):
+        type_ (Literal['interval']):
         interval_seconds (int):
         id (Union[None, Unset, int]):
         environment (Union[None, Unset, str]):
@@ -21,17 +20,17 @@ class IntervalHeartbeatStateSchema:
         timeout_seconds (Union[Unset, int]):  Default: 0.
     """
 
-    type: IntervalHeartbeatStateSchemaType
+    type_: Literal["interval"]
     interval_seconds: int
     id: Union[None, Unset, int] = UNSET
     environment: Union[None, Unset, str] = UNSET
     muted: Union[Unset, bool] = False
     resolve_incident: Union[Unset, bool] = True
     timeout_seconds: Union[Unset, int] = 0
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
-        type = self.type.value
+    def to_dict(self) -> dict[str, Any]:
+        type_ = self.type_
 
         interval_seconds = self.interval_seconds
 
@@ -53,11 +52,11 @@ class IntervalHeartbeatStateSchema:
 
         timeout_seconds = self.timeout_seconds
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "type": type,
+                "type": type_,
                 "interval_seconds": interval_seconds,
             }
         )
@@ -75,9 +74,11 @@ class IntervalHeartbeatStateSchema:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
         d = src_dict.copy()
-        type = IntervalHeartbeatStateSchemaType(d.pop("type"))
+        type_ = cast(Literal["interval"], d.pop("type"))
+        if type_ != "interval":
+            raise ValueError(f"type must match const 'interval', got '{type_}'")
 
         interval_seconds = d.pop("interval_seconds")
 
@@ -106,7 +107,7 @@ class IntervalHeartbeatStateSchema:
         timeout_seconds = d.pop("timeout_seconds", UNSET)
 
         interval_heartbeat_state_schema = cls(
-            type=type,
+            type_=type_,
             interval_seconds=interval_seconds,
             id=id,
             environment=environment,
@@ -119,7 +120,7 @@ class IntervalHeartbeatStateSchema:
         return interval_heartbeat_state_schema
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

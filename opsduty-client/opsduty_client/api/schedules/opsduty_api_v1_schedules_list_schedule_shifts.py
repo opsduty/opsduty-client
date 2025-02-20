@@ -1,6 +1,6 @@
 import datetime
 from http import HTTPStatus
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Optional, Union
 
 import httpx
 
@@ -16,8 +16,8 @@ def _get_kwargs(
     datetime_start: datetime.datetime,
     datetime_end: datetime.datetime,
     overflow: Union[Unset, bool] = True,
-) -> Dict[str, Any]:
-    params: Dict[str, Any] = {}
+) -> dict[str, Any]:
+    params: dict[str, Any] = {}
 
     json_datetime_start = datetime_start.isoformat()
     params["datetime_start"] = json_datetime_start
@@ -29,7 +29,7 @@ def _get_kwargs(
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    _kwargs: Dict[str, Any] = {
+    _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/api/v1/schedules/{schedule_id}/shifts/".format(
             schedule_id=schedule_id,
@@ -40,8 +40,8 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[List["ScheduleShiftSchema"]]:
-    if response.status_code == HTTPStatus.OK:
+def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[list["ScheduleShiftSchema"]]:
+    if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
@@ -56,7 +56,7 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[List["ScheduleShiftSchema"]]:
+def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[list["ScheduleShiftSchema"]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -72,7 +72,7 @@ def sync_detailed(
     datetime_start: datetime.datetime,
     datetime_end: datetime.datetime,
     overflow: Union[Unset, bool] = True,
-) -> Response[List["ScheduleShiftSchema"]]:
+) -> Response[list["ScheduleShiftSchema"]]:
     """List Schedule Shifts
 
     Args:
@@ -86,7 +86,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[List['ScheduleShiftSchema']]
+        Response[list['ScheduleShiftSchema']]
     """
 
     kwargs = _get_kwargs(
@@ -110,7 +110,7 @@ def sync(
     datetime_start: datetime.datetime,
     datetime_end: datetime.datetime,
     overflow: Union[Unset, bool] = True,
-) -> Optional[List["ScheduleShiftSchema"]]:
+) -> Optional[list["ScheduleShiftSchema"]]:
     """List Schedule Shifts
 
     Args:
@@ -124,7 +124,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        List['ScheduleShiftSchema']
+        list['ScheduleShiftSchema']
     """
 
     return sync_detailed(
@@ -143,7 +143,7 @@ async def asyncio_detailed(
     datetime_start: datetime.datetime,
     datetime_end: datetime.datetime,
     overflow: Union[Unset, bool] = True,
-) -> Response[List["ScheduleShiftSchema"]]:
+) -> Response[list["ScheduleShiftSchema"]]:
     """List Schedule Shifts
 
     Args:
@@ -157,7 +157,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[List['ScheduleShiftSchema']]
+        Response[list['ScheduleShiftSchema']]
     """
 
     kwargs = _get_kwargs(
@@ -179,7 +179,7 @@ async def asyncio(
     datetime_start: datetime.datetime,
     datetime_end: datetime.datetime,
     overflow: Union[Unset, bool] = True,
-) -> Optional[List["ScheduleShiftSchema"]]:
+) -> Optional[list["ScheduleShiftSchema"]]:
     """List Schedule Shifts
 
     Args:
@@ -193,7 +193,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        List['ScheduleShiftSchema']
+        list['ScheduleShiftSchema']
     """
 
     return (

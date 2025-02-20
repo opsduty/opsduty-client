@@ -1,8 +1,7 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from typing import Any, Literal, TypeVar, Union, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
-from ..models.cron_heartbeat_state_schema_type import CronHeartbeatStateSchemaType
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="CronHeartbeatStateSchema")
@@ -12,7 +11,7 @@ T = TypeVar("T", bound="CronHeartbeatStateSchema")
 class CronHeartbeatStateSchema:
     """
     Attributes:
-        type (CronHeartbeatStateSchemaType):
+        type_ (Literal['cron']):
         cron_expression (str):
         cron_timezone (str):
         id (Union[None, Unset, int]):
@@ -22,7 +21,7 @@ class CronHeartbeatStateSchema:
         timeout_seconds (Union[Unset, int]):  Default: 0.
     """
 
-    type: CronHeartbeatStateSchemaType
+    type_: Literal["cron"]
     cron_expression: str
     cron_timezone: str
     id: Union[None, Unset, int] = UNSET
@@ -30,10 +29,10 @@ class CronHeartbeatStateSchema:
     muted: Union[Unset, bool] = False
     resolve_incident: Union[Unset, bool] = True
     timeout_seconds: Union[Unset, int] = 0
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
-        type = self.type.value
+    def to_dict(self) -> dict[str, Any]:
+        type_ = self.type_
 
         cron_expression = self.cron_expression
 
@@ -57,11 +56,11 @@ class CronHeartbeatStateSchema:
 
         timeout_seconds = self.timeout_seconds
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "type": type,
+                "type": type_,
                 "cron_expression": cron_expression,
                 "cron_timezone": cron_timezone,
             }
@@ -80,9 +79,11 @@ class CronHeartbeatStateSchema:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
         d = src_dict.copy()
-        type = CronHeartbeatStateSchemaType(d.pop("type"))
+        type_ = cast(Literal["cron"], d.pop("type"))
+        if type_ != "cron":
+            raise ValueError(f"type must match const 'cron', got '{type_}'")
 
         cron_expression = d.pop("cron_expression")
 
@@ -113,7 +114,7 @@ class CronHeartbeatStateSchema:
         timeout_seconds = d.pop("timeout_seconds", UNSET)
 
         cron_heartbeat_state_schema = cls(
-            type=type,
+            type_=type_,
             cron_expression=cron_expression,
             cron_timezone=cron_timezone,
             id=id,
@@ -127,7 +128,7 @@ class CronHeartbeatStateSchema:
         return cron_heartbeat_state_schema
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

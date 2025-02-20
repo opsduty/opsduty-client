@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Optional, Union
 
 import httpx
 
@@ -11,8 +11,8 @@ from ...types import Response
 
 def _get_kwargs(
     service_id: int,
-) -> Dict[str, Any]:
-    _kwargs: Dict[str, Any] = {
+) -> dict[str, Any]:
+    _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/api/v1/services/{service_id}/oncall/".format(
             service_id=service_id,
@@ -22,8 +22,8 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[List["ServiceOncallUserSchema"]]:
-    if response.status_code == HTTPStatus.OK:
+def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[list["ServiceOncallUserSchema"]]:
+    if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
@@ -38,7 +38,7 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[List["ServiceOncallUserSchema"]]:
+def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[list["ServiceOncallUserSchema"]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -51,7 +51,7 @@ def sync_detailed(
     service_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[List["ServiceOncallUserSchema"]]:
+) -> Response[list["ServiceOncallUserSchema"]]:
     """List Service Oncall
 
     Args:
@@ -62,7 +62,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[List['ServiceOncallUserSchema']]
+        Response[list['ServiceOncallUserSchema']]
     """
 
     kwargs = _get_kwargs(
@@ -80,7 +80,7 @@ def sync(
     service_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[List["ServiceOncallUserSchema"]]:
+) -> Optional[list["ServiceOncallUserSchema"]]:
     """List Service Oncall
 
     Args:
@@ -91,7 +91,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        List['ServiceOncallUserSchema']
+        list['ServiceOncallUserSchema']
     """
 
     return sync_detailed(
@@ -104,7 +104,7 @@ async def asyncio_detailed(
     service_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[List["ServiceOncallUserSchema"]]:
+) -> Response[list["ServiceOncallUserSchema"]]:
     """List Service Oncall
 
     Args:
@@ -115,7 +115,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[List['ServiceOncallUserSchema']]
+        Response[list['ServiceOncallUserSchema']]
     """
 
     kwargs = _get_kwargs(
@@ -131,7 +131,7 @@ async def asyncio(
     service_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[List["ServiceOncallUserSchema"]]:
+) -> Optional[list["ServiceOncallUserSchema"]]:
     """List Service Oncall
 
     Args:
@@ -142,7 +142,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        List['ServiceOncallUserSchema']
+        list['ServiceOncallUserSchema']
     """
 
     return (

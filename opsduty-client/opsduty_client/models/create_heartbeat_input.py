@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
@@ -17,7 +17,7 @@ class CreateHeartbeatInput:
         service (int):
         link (Union[None, Unset, str]):
         incident_urgency (Union[IncidentUrgency, None, Unset]):
-        labels (Union[Unset, List[str]]):
+        labels (Union[Unset, list[str]]):
     """
 
     name: str
@@ -25,10 +25,10 @@ class CreateHeartbeatInput:
     service: int
     link: Union[None, Unset, str] = UNSET
     incident_urgency: Union[IncidentUrgency, None, Unset] = UNSET
-    labels: Union[Unset, List[str]] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    labels: Union[Unset, list[str]] = UNSET
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         name = self.name
 
         description = self.description
@@ -49,11 +49,11 @@ class CreateHeartbeatInput:
         else:
             incident_urgency = self.incident_urgency
 
-        labels: Union[Unset, List[str]] = UNSET
+        labels: Union[Unset, list[str]] = UNSET
         if not isinstance(self.labels, Unset):
             labels = self.labels
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -72,7 +72,7 @@ class CreateHeartbeatInput:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
         d = src_dict.copy()
         name = d.pop("name")
 
@@ -106,7 +106,7 @@ class CreateHeartbeatInput:
 
         incident_urgency = _parse_incident_urgency(d.pop("incident_urgency", UNSET))
 
-        labels = cast(List[str], d.pop("labels", UNSET))
+        labels = cast(list[str], d.pop("labels", UNSET))
 
         create_heartbeat_input = cls(
             name=name,
@@ -121,7 +121,7 @@ class CreateHeartbeatInput:
         return create_heartbeat_input
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

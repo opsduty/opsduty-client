@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
@@ -19,9 +19,9 @@ class Input:
     page_size: Union[None, Unset, int] = UNSET
     before: Union[None, Unset, str] = UNSET
     after: Union[None, Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         page_size: Union[None, Unset, int]
         if isinstance(self.page_size, Unset):
             page_size = UNSET
@@ -40,7 +40,7 @@ class Input:
         else:
             after = self.after
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if page_size is not UNSET:
@@ -53,7 +53,7 @@ class Input:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
         d = src_dict.copy()
 
         def _parse_page_size(data: object) -> Union[None, Unset, int]:
@@ -93,7 +93,7 @@ class Input:
         return input_
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

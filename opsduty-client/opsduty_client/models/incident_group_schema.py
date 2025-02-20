@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
+from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 from dateutil.parser import isoparse
@@ -40,14 +40,14 @@ class IncidentGroupSchema:
     resolved_at: Union[None, Unset, datetime.datetime] = UNSET
     silenced_at: Union[None, Unset, datetime.datetime] = UNSET
     last_status_change_at: Union[None, Unset, datetime.datetime] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         from ..models.incident_group_service_schema import IncidentGroupServiceSchema
 
         status = self.status.value
 
-        service: Union[Dict[str, Any], None]
+        service: Union[None, dict[str, Any]]
         if isinstance(self.service, IncidentGroupServiceSchema):
             service = self.service.to_dict()
         else:
@@ -101,7 +101,7 @@ class IncidentGroupSchema:
         else:
             last_status_change_at = self.last_status_change_at
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -128,7 +128,7 @@ class IncidentGroupSchema:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
         from ..models.incident_group_service_schema import IncidentGroupServiceSchema
 
         d = src_dict.copy()
@@ -256,7 +256,7 @@ class IncidentGroupSchema:
         return incident_group_schema
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:
