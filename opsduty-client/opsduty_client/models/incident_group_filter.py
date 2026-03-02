@@ -15,10 +15,12 @@ class IncidentGroupFilter:
     Attributes:
         since (Union[None, Unset, datetime.datetime]):
         until (Union[None, Unset, datetime.datetime]):
+        service (Union[None, Unset, int]):
     """
 
     since: Union[None, Unset, datetime.datetime] = UNSET
     until: Union[None, Unset, datetime.datetime] = UNSET
+    service: Union[None, Unset, int] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -38,6 +40,12 @@ class IncidentGroupFilter:
         else:
             until = self.until
 
+        service: Union[None, Unset, int]
+        if isinstance(self.service, Unset):
+            service = UNSET
+        else:
+            service = self.service
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -45,6 +53,8 @@ class IncidentGroupFilter:
             field_dict["since"] = since
         if until is not UNSET:
             field_dict["until"] = until
+        if service is not UNSET:
+            field_dict["service"] = service
 
         return field_dict
 
@@ -86,9 +96,19 @@ class IncidentGroupFilter:
 
         until = _parse_until(d.pop("until", UNSET))
 
+        def _parse_service(data: object) -> Union[None, Unset, int]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(Union[None, Unset, int], data)
+
+        service = _parse_service(d.pop("service", UNSET))
+
         incident_group_filter = cls(
             since=since,
             until=until,
+            service=service,
         )
 
         incident_group_filter.additional_properties = d

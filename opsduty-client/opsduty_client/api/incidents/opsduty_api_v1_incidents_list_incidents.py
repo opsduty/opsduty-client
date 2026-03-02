@@ -14,6 +14,7 @@ def _get_kwargs(
     *,
     since: Union[None, Unset, datetime.datetime] = UNSET,
     until: Union[None, Unset, datetime.datetime] = UNSET,
+    service: Union[None, Unset, int] = UNSET,
     page_size: Union[None, Unset, int] = UNSET,
     before: Union[None, Unset, str] = UNSET,
     after: Union[None, Unset, str] = UNSET,
@@ -37,6 +38,13 @@ def _get_kwargs(
     else:
         json_until = until
     params["until"] = json_until
+
+    json_service: Union[None, Unset, int]
+    if isinstance(service, Unset):
+        json_service = UNSET
+    else:
+        json_service = service
+    params["service"] = json_service
 
     json_page_size: Union[None, Unset, int]
     if isinstance(page_size, Unset):
@@ -95,6 +103,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     since: Union[None, Unset, datetime.datetime] = UNSET,
     until: Union[None, Unset, datetime.datetime] = UNSET,
+    service: Union[None, Unset, int] = UNSET,
     page_size: Union[None, Unset, int] = UNSET,
     before: Union[None, Unset, str] = UNSET,
     after: Union[None, Unset, str] = UNSET,
@@ -104,6 +113,7 @@ def sync_detailed(
     Args:
         since (Union[None, Unset, datetime.datetime]):
         until (Union[None, Unset, datetime.datetime]):
+        service (Union[None, Unset, int]):
         page_size (Union[None, Unset, int]):
         before (Union[None, Unset, str]):
         after (Union[None, Unset, str]):
@@ -119,6 +129,7 @@ def sync_detailed(
     kwargs = _get_kwargs(
         since=since,
         until=until,
+        service=service,
         page_size=page_size,
         before=before,
         after=after,
@@ -136,6 +147,7 @@ def sync(
     client: AuthenticatedClient,
     since: Union[None, Unset, datetime.datetime] = UNSET,
     until: Union[None, Unset, datetime.datetime] = UNSET,
+    service: Union[None, Unset, int] = UNSET,
     page_size: Union[None, Unset, int] = UNSET,
     before: Union[None, Unset, str] = UNSET,
     after: Union[None, Unset, str] = UNSET,
@@ -145,6 +157,7 @@ def sync(
     Args:
         since (Union[None, Unset, datetime.datetime]):
         until (Union[None, Unset, datetime.datetime]):
+        service (Union[None, Unset, int]):
         page_size (Union[None, Unset, int]):
         before (Union[None, Unset, str]):
         after (Union[None, Unset, str]):
@@ -161,6 +174,7 @@ def sync(
         client=client,
         since=since,
         until=until,
+        service=service,
         page_size=page_size,
         before=before,
         after=after,
@@ -172,6 +186,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     since: Union[None, Unset, datetime.datetime] = UNSET,
     until: Union[None, Unset, datetime.datetime] = UNSET,
+    service: Union[None, Unset, int] = UNSET,
     page_size: Union[None, Unset, int] = UNSET,
     before: Union[None, Unset, str] = UNSET,
     after: Union[None, Unset, str] = UNSET,
@@ -181,6 +196,7 @@ async def asyncio_detailed(
     Args:
         since (Union[None, Unset, datetime.datetime]):
         until (Union[None, Unset, datetime.datetime]):
+        service (Union[None, Unset, int]):
         page_size (Union[None, Unset, int]):
         before (Union[None, Unset, str]):
         after (Union[None, Unset, str]):
@@ -196,6 +212,7 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         since=since,
         until=until,
+        service=service,
         page_size=page_size,
         before=before,
         after=after,
@@ -211,6 +228,7 @@ async def asyncio(
     client: AuthenticatedClient,
     since: Union[None, Unset, datetime.datetime] = UNSET,
     until: Union[None, Unset, datetime.datetime] = UNSET,
+    service: Union[None, Unset, int] = UNSET,
     page_size: Union[None, Unset, int] = UNSET,
     before: Union[None, Unset, str] = UNSET,
     after: Union[None, Unset, str] = UNSET,
@@ -220,6 +238,7 @@ async def asyncio(
     Args:
         since (Union[None, Unset, datetime.datetime]):
         until (Union[None, Unset, datetime.datetime]):
+        service (Union[None, Unset, int]):
         page_size (Union[None, Unset, int]):
         before (Union[None, Unset, str]):
         after (Union[None, Unset, str]):
@@ -237,6 +256,7 @@ async def asyncio(
             client=client,
             since=since,
             until=until,
+            service=service,
             page_size=page_size,
             before=before,
             after=after,
