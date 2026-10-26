@@ -1,4 +1,7 @@
-from typing import Any, TypeVar, Union, cast
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
@@ -11,30 +14,30 @@ T = TypeVar("T", bound="ScheduleOverrideUserSchema")
 class ScheduleOverrideUserSchema:
     """
     Attributes:
-        id (Union[None, Unset, int]):
-        first_name (Union[None, Unset, str]):
-        last_name (Union[None, Unset, str]):
+        id (int | None | Unset):
+        first_name (None | str | Unset):
+        last_name (None | str | Unset):
     """
 
-    id: Union[None, Unset, int] = UNSET
-    first_name: Union[None, Unset, str] = UNSET
-    last_name: Union[None, Unset, str] = UNSET
+    id: int | None | Unset = UNSET
+    first_name: None | str | Unset = UNSET
+    last_name: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        id: Union[None, Unset, int]
+        id: int | None | Unset
         if isinstance(self.id, Unset):
             id = UNSET
         else:
             id = self.id
 
-        first_name: Union[None, Unset, str]
+        first_name: None | str | Unset
         if isinstance(self.first_name, Unset):
             first_name = UNSET
         else:
             first_name = self.first_name
 
-        last_name: Union[None, Unset, str]
+        last_name: None | str | Unset
         if isinstance(self.last_name, Unset):
             last_name = UNSET
         else:
@@ -53,33 +56,33 @@ class ScheduleOverrideUserSchema:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
 
-        def _parse_id(data: object) -> Union[None, Unset, int]:
+        def _parse_id(data: object) -> int | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, int], data)
+            return cast(int | None | Unset, data)
 
         id = _parse_id(d.pop("id", UNSET))
 
-        def _parse_first_name(data: object) -> Union[None, Unset, str]:
+        def _parse_first_name(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         first_name = _parse_first_name(d.pop("first_name", UNSET))
 
-        def _parse_last_name(data: object) -> Union[None, Unset, str]:
+        def _parse_last_name(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         last_name = _parse_last_name(d.pop("last_name", UNSET))
 

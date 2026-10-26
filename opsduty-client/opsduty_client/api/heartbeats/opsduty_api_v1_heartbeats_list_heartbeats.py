@@ -1,45 +1,55 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.opsduty_api_v1_heartbeats_list_heartbeats_response_401 import OpsdutyApiV1HeartbeatsListHeartbeatsResponse401
+from ...models.opsduty_api_v1_heartbeats_list_heartbeats_response_422 import OpsdutyApiV1HeartbeatsListHeartbeatsResponse422
 from ...models.paged_heartbeat_schema import PagedHeartbeatSchema
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    service: Union[None, Unset, int] = UNSET,
-    page_size: Union[None, Unset, int] = UNSET,
-    before: Union[None, Unset, str] = UNSET,
-    after: Union[None, Unset, str] = UNSET,
+    service: int | None | Unset = UNSET,
+    first: int | None | Unset = UNSET,
+    last: int | None | Unset = UNSET,
+    before: None | str | Unset = UNSET,
+    after: None | str | Unset = UNSET,
 ) -> dict[str, Any]:
     params: dict[str, Any] = {}
 
-    json_service: Union[None, Unset, int]
+    json_service: int | None | Unset
     if isinstance(service, Unset):
         json_service = UNSET
     else:
         json_service = service
     params["service"] = json_service
 
-    json_page_size: Union[None, Unset, int]
-    if isinstance(page_size, Unset):
-        json_page_size = UNSET
+    json_first: int | None | Unset
+    if isinstance(first, Unset):
+        json_first = UNSET
     else:
-        json_page_size = page_size
-    params["page_size"] = json_page_size
+        json_first = first
+    params["first"] = json_first
 
-    json_before: Union[None, Unset, str]
+    json_last: int | None | Unset
+    if isinstance(last, Unset):
+        json_last = UNSET
+    else:
+        json_last = last
+    params["last"] = json_last
+
+    json_before: None | str | Unset
     if isinstance(before, Unset):
         json_before = UNSET
     else:
         json_before = before
     params["before"] = json_before
 
-    json_after: Union[None, Unset, str]
+    json_after: None | str | Unset
     if isinstance(after, Unset):
         json_after = UNSET
     else:
@@ -57,18 +67,29 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[PagedHeartbeatSchema]:
+def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> OpsdutyApiV1HeartbeatsListHeartbeatsResponse401 | OpsdutyApiV1HeartbeatsListHeartbeatsResponse422 | PagedHeartbeatSchema | None:
     if response.status_code == 200:
         response_200 = PagedHeartbeatSchema.from_dict(response.json())
 
         return response_200
+
+    if response.status_code == 401:
+        response_401 = OpsdutyApiV1HeartbeatsListHeartbeatsResponse401.from_dict(response.json())
+
+        return response_401
+
+    if response.status_code == 422:
+        response_422 = OpsdutyApiV1HeartbeatsListHeartbeatsResponse422.from_dict(response.json())
+
+        return response_422
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[PagedHeartbeatSchema]:
+def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[OpsdutyApiV1HeartbeatsListHeartbeatsResponse401 | OpsdutyApiV1HeartbeatsListHeartbeatsResponse422 | PagedHeartbeatSchema]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -80,30 +101,39 @@ def _build_response(*, client: Union[AuthenticatedClient, Client], response: htt
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    service: Union[None, Unset, int] = UNSET,
-    page_size: Union[None, Unset, int] = UNSET,
-    before: Union[None, Unset, str] = UNSET,
-    after: Union[None, Unset, str] = UNSET,
-) -> Response[PagedHeartbeatSchema]:
-    """List Heartbeats
+    service: int | None | Unset = UNSET,
+    first: int | None | Unset = UNSET,
+    last: int | None | Unset = UNSET,
+    before: None | str | Unset = UNSET,
+    after: None | str | Unset = UNSET,
+) -> Response[OpsdutyApiV1HeartbeatsListHeartbeatsResponse401 | OpsdutyApiV1HeartbeatsListHeartbeatsResponse422 | PagedHeartbeatSchema]:
+    """List heartbeats
+
+     List the heartbeats you can see, oldest first, with their environments.
+
+    Narrow the list to one service with `service`.
 
     Args:
-        service (Union[None, Unset, int]):
-        page_size (Union[None, Unset, int]):
-        before (Union[None, Unset, str]):
-        after (Union[None, Unset, str]):
+        service (int | None | Unset):
+        first (int | None | Unset): How many items to return from the start of the list, or after
+            `after`.
+        last (int | None | Unset): How many items to return from the end of the list, or before
+            `before`. They are still in list order.
+        before (None | str | Unset): A `start_cursor` to page back from.
+        after (None | str | Unset): An `end_cursor` to page on from.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[PagedHeartbeatSchema]
+        Response[OpsdutyApiV1HeartbeatsListHeartbeatsResponse401 | OpsdutyApiV1HeartbeatsListHeartbeatsResponse422 | PagedHeartbeatSchema]
     """
 
     kwargs = _get_kwargs(
         service=service,
-        page_size=page_size,
+        first=first,
+        last=last,
         before=before,
         after=after,
     )
@@ -118,31 +148,40 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    service: Union[None, Unset, int] = UNSET,
-    page_size: Union[None, Unset, int] = UNSET,
-    before: Union[None, Unset, str] = UNSET,
-    after: Union[None, Unset, str] = UNSET,
-) -> Optional[PagedHeartbeatSchema]:
-    """List Heartbeats
+    service: int | None | Unset = UNSET,
+    first: int | None | Unset = UNSET,
+    last: int | None | Unset = UNSET,
+    before: None | str | Unset = UNSET,
+    after: None | str | Unset = UNSET,
+) -> OpsdutyApiV1HeartbeatsListHeartbeatsResponse401 | OpsdutyApiV1HeartbeatsListHeartbeatsResponse422 | PagedHeartbeatSchema | None:
+    """List heartbeats
+
+     List the heartbeats you can see, oldest first, with their environments.
+
+    Narrow the list to one service with `service`.
 
     Args:
-        service (Union[None, Unset, int]):
-        page_size (Union[None, Unset, int]):
-        before (Union[None, Unset, str]):
-        after (Union[None, Unset, str]):
+        service (int | None | Unset):
+        first (int | None | Unset): How many items to return from the start of the list, or after
+            `after`.
+        last (int | None | Unset): How many items to return from the end of the list, or before
+            `before`. They are still in list order.
+        before (None | str | Unset): A `start_cursor` to page back from.
+        after (None | str | Unset): An `end_cursor` to page on from.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        PagedHeartbeatSchema
+        OpsdutyApiV1HeartbeatsListHeartbeatsResponse401 | OpsdutyApiV1HeartbeatsListHeartbeatsResponse422 | PagedHeartbeatSchema
     """
 
     return sync_detailed(
         client=client,
         service=service,
-        page_size=page_size,
+        first=first,
+        last=last,
         before=before,
         after=after,
     ).parsed
@@ -151,30 +190,39 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    service: Union[None, Unset, int] = UNSET,
-    page_size: Union[None, Unset, int] = UNSET,
-    before: Union[None, Unset, str] = UNSET,
-    after: Union[None, Unset, str] = UNSET,
-) -> Response[PagedHeartbeatSchema]:
-    """List Heartbeats
+    service: int | None | Unset = UNSET,
+    first: int | None | Unset = UNSET,
+    last: int | None | Unset = UNSET,
+    before: None | str | Unset = UNSET,
+    after: None | str | Unset = UNSET,
+) -> Response[OpsdutyApiV1HeartbeatsListHeartbeatsResponse401 | OpsdutyApiV1HeartbeatsListHeartbeatsResponse422 | PagedHeartbeatSchema]:
+    """List heartbeats
+
+     List the heartbeats you can see, oldest first, with their environments.
+
+    Narrow the list to one service with `service`.
 
     Args:
-        service (Union[None, Unset, int]):
-        page_size (Union[None, Unset, int]):
-        before (Union[None, Unset, str]):
-        after (Union[None, Unset, str]):
+        service (int | None | Unset):
+        first (int | None | Unset): How many items to return from the start of the list, or after
+            `after`.
+        last (int | None | Unset): How many items to return from the end of the list, or before
+            `before`. They are still in list order.
+        before (None | str | Unset): A `start_cursor` to page back from.
+        after (None | str | Unset): An `end_cursor` to page on from.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[PagedHeartbeatSchema]
+        Response[OpsdutyApiV1HeartbeatsListHeartbeatsResponse401 | OpsdutyApiV1HeartbeatsListHeartbeatsResponse422 | PagedHeartbeatSchema]
     """
 
     kwargs = _get_kwargs(
         service=service,
-        page_size=page_size,
+        first=first,
+        last=last,
         before=before,
         after=after,
     )
@@ -187,32 +235,41 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    service: Union[None, Unset, int] = UNSET,
-    page_size: Union[None, Unset, int] = UNSET,
-    before: Union[None, Unset, str] = UNSET,
-    after: Union[None, Unset, str] = UNSET,
-) -> Optional[PagedHeartbeatSchema]:
-    """List Heartbeats
+    service: int | None | Unset = UNSET,
+    first: int | None | Unset = UNSET,
+    last: int | None | Unset = UNSET,
+    before: None | str | Unset = UNSET,
+    after: None | str | Unset = UNSET,
+) -> OpsdutyApiV1HeartbeatsListHeartbeatsResponse401 | OpsdutyApiV1HeartbeatsListHeartbeatsResponse422 | PagedHeartbeatSchema | None:
+    """List heartbeats
+
+     List the heartbeats you can see, oldest first, with their environments.
+
+    Narrow the list to one service with `service`.
 
     Args:
-        service (Union[None, Unset, int]):
-        page_size (Union[None, Unset, int]):
-        before (Union[None, Unset, str]):
-        after (Union[None, Unset, str]):
+        service (int | None | Unset):
+        first (int | None | Unset): How many items to return from the start of the list, or after
+            `after`.
+        last (int | None | Unset): How many items to return from the end of the list, or before
+            `before`. They are still in list order.
+        before (None | str | Unset): A `start_cursor` to page back from.
+        after (None | str | Unset): An `end_cursor` to page on from.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        PagedHeartbeatSchema
+        OpsdutyApiV1HeartbeatsListHeartbeatsResponse401 | OpsdutyApiV1HeartbeatsListHeartbeatsResponse422 | PagedHeartbeatSchema
     """
 
     return (
         await asyncio_detailed(
             client=client,
             service=service,
-            page_size=page_size,
+            first=first,
+            last=last,
             before=before,
             after=after,
         )

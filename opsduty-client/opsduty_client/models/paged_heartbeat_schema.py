@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
@@ -14,12 +17,12 @@ T = TypeVar("T", bound="PagedHeartbeatSchema")
 class PagedHeartbeatSchema:
     """
     Attributes:
-        items (list['HeartbeatSchema']):
+        items (list[HeartbeatSchema]):
         page_info (PageInfo):
     """
 
-    items: list["HeartbeatSchema"]
-    page_info: "PageInfo"
+    items: list[HeartbeatSchema]
+    page_info: PageInfo
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -42,11 +45,11 @@ class PagedHeartbeatSchema:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
-        from ..models.heartbeat_schema import HeartbeatSchema
-        from ..models.page_info import PageInfo
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.heartbeat_schema import HeartbeatSchema  # noqa: PLC0415
+        from ..models.page_info import PageInfo  # noqa: PLC0415
 
-        d = src_dict.copy()
+        d = dict(src_dict)
         items = []
         _items = d.pop("items")
         for items_item_data in _items:

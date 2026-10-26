@@ -1,10 +1,14 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
+from urllib.parse import quote
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.opsduty_api_v1_services_list_service_oncall_response_401 import OpsdutyApiV1ServicesListServiceOncallResponse401
+from ...models.opsduty_api_v1_services_list_service_oncall_response_404 import OpsdutyApiV1ServicesListServiceOncallResponse404
+from ...models.opsduty_api_v1_services_list_service_oncall_response_422 import OpsdutyApiV1ServicesListServiceOncallResponse422
 from ...models.service_oncall_user_schema import ServiceOncallUserSchema
 from ...types import Response
 
@@ -15,14 +19,16 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/api/v1/services/{service_id}/oncall/".format(
-            service_id=service_id,
+            service_id=quote(str(service_id), safe=""),
         ),
     }
 
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[list["ServiceOncallUserSchema"]]:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> OpsdutyApiV1ServicesListServiceOncallResponse401 | OpsdutyApiV1ServicesListServiceOncallResponse404 | OpsdutyApiV1ServicesListServiceOncallResponse422 | list[ServiceOncallUserSchema] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -32,13 +38,31 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
             response_200.append(response_200_item)
 
         return response_200
+
+    if response.status_code == 401:
+        response_401 = OpsdutyApiV1ServicesListServiceOncallResponse401.from_dict(response.json())
+
+        return response_401
+
+    if response.status_code == 404:
+        response_404 = OpsdutyApiV1ServicesListServiceOncallResponse404.from_dict(response.json())
+
+        return response_404
+
+    if response.status_code == 422:
+        response_422 = OpsdutyApiV1ServicesListServiceOncallResponse422.from_dict(response.json())
+
+        return response_422
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[list["ServiceOncallUserSchema"]]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[OpsdutyApiV1ServicesListServiceOncallResponse401 | OpsdutyApiV1ServicesListServiceOncallResponse404 | OpsdutyApiV1ServicesListServiceOncallResponse422 | list[ServiceOncallUserSchema]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -51,8 +75,15 @@ def sync_detailed(
     service_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[list["ServiceOncallUserSchema"]]:
-    """List Service Oncall
+) -> Response[OpsdutyApiV1ServicesListServiceOncallResponse401 | OpsdutyApiV1ServicesListServiceOncallResponse404 | OpsdutyApiV1ServicesListServiceOncallResponse422 | list[ServiceOncallUserSchema]]:
+    """List who is on call for a service
+
+     List who an incident on this service would reach first.
+
+    These are the people the first notify step of the service's escalation
+    policy resolves to right now. The list is empty when the service has no
+    escalation policy, when that policy has no notify step, or when the step
+    resolves to nobody, which all mean an incident here pages no one.
 
     Args:
         service_id (int):
@@ -62,7 +93,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[list['ServiceOncallUserSchema']]
+        Response[OpsdutyApiV1ServicesListServiceOncallResponse401 | OpsdutyApiV1ServicesListServiceOncallResponse404 | OpsdutyApiV1ServicesListServiceOncallResponse422 | list[ServiceOncallUserSchema]]
     """
 
     kwargs = _get_kwargs(
@@ -80,8 +111,15 @@ def sync(
     service_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[list["ServiceOncallUserSchema"]]:
-    """List Service Oncall
+) -> OpsdutyApiV1ServicesListServiceOncallResponse401 | OpsdutyApiV1ServicesListServiceOncallResponse404 | OpsdutyApiV1ServicesListServiceOncallResponse422 | list[ServiceOncallUserSchema] | None:
+    """List who is on call for a service
+
+     List who an incident on this service would reach first.
+
+    These are the people the first notify step of the service's escalation
+    policy resolves to right now. The list is empty when the service has no
+    escalation policy, when that policy has no notify step, or when the step
+    resolves to nobody, which all mean an incident here pages no one.
 
     Args:
         service_id (int):
@@ -91,7 +129,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        list['ServiceOncallUserSchema']
+        OpsdutyApiV1ServicesListServiceOncallResponse401 | OpsdutyApiV1ServicesListServiceOncallResponse404 | OpsdutyApiV1ServicesListServiceOncallResponse422 | list[ServiceOncallUserSchema]
     """
 
     return sync_detailed(
@@ -104,8 +142,15 @@ async def asyncio_detailed(
     service_id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[list["ServiceOncallUserSchema"]]:
-    """List Service Oncall
+) -> Response[OpsdutyApiV1ServicesListServiceOncallResponse401 | OpsdutyApiV1ServicesListServiceOncallResponse404 | OpsdutyApiV1ServicesListServiceOncallResponse422 | list[ServiceOncallUserSchema]]:
+    """List who is on call for a service
+
+     List who an incident on this service would reach first.
+
+    These are the people the first notify step of the service's escalation
+    policy resolves to right now. The list is empty when the service has no
+    escalation policy, when that policy has no notify step, or when the step
+    resolves to nobody, which all mean an incident here pages no one.
 
     Args:
         service_id (int):
@@ -115,7 +160,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[list['ServiceOncallUserSchema']]
+        Response[OpsdutyApiV1ServicesListServiceOncallResponse401 | OpsdutyApiV1ServicesListServiceOncallResponse404 | OpsdutyApiV1ServicesListServiceOncallResponse422 | list[ServiceOncallUserSchema]]
     """
 
     kwargs = _get_kwargs(
@@ -131,8 +176,15 @@ async def asyncio(
     service_id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[list["ServiceOncallUserSchema"]]:
-    """List Service Oncall
+) -> OpsdutyApiV1ServicesListServiceOncallResponse401 | OpsdutyApiV1ServicesListServiceOncallResponse404 | OpsdutyApiV1ServicesListServiceOncallResponse422 | list[ServiceOncallUserSchema] | None:
+    """List who is on call for a service
+
+     List who an incident on this service would reach first.
+
+    These are the people the first notify step of the service's escalation
+    policy resolves to right now. The list is empty when the service has no
+    escalation policy, when that policy has no notify step, or when the step
+    resolves to nobody, which all mean an incident here pages no one.
 
     Args:
         service_id (int):
@@ -142,7 +194,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        list['ServiceOncallUserSchema']
+        OpsdutyApiV1ServicesListServiceOncallResponse401 | OpsdutyApiV1ServicesListServiceOncallResponse404 | OpsdutyApiV1ServicesListServiceOncallResponse422 | list[ServiceOncallUserSchema]
     """
 
     return (

@@ -1,4 +1,7 @@
-from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
@@ -16,30 +19,28 @@ T = TypeVar("T", bound="HeartbeatSchema")
 class HeartbeatSchema:
     """
     Attributes:
-        states (list[Union['CronHeartbeatStateSchema', 'IntervalHeartbeatStateSchema']]):
+        states (list[CronHeartbeatStateSchema | IntervalHeartbeatStateSchema]):
         name (str):
         service (int):
-        id (Union[None, Unset, int]):
-        public_primary_key (Union[Unset, str]):
-        description (Union[None, Unset, str]):  Default: ''.
-        link (Union[None, Unset, str]):
-        incident_urgency (Union[None, Unset, str]):
-        labels (Union[None, Unset, list[Any]]):
+        id (int | None | Unset):
+        public_primary_key (str | Unset):
+        description (None | str | Unset):  Default: ''.
+        link (None | str | Unset):
+        incident_urgency (None | str | Unset):
     """
 
-    states: list[Union["CronHeartbeatStateSchema", "IntervalHeartbeatStateSchema"]]
+    states: list[CronHeartbeatStateSchema | IntervalHeartbeatStateSchema]
     name: str
     service: int
-    id: Union[None, Unset, int] = UNSET
-    public_primary_key: Union[Unset, str] = UNSET
-    description: Union[None, Unset, str] = ""
-    link: Union[None, Unset, str] = UNSET
-    incident_urgency: Union[None, Unset, str] = UNSET
-    labels: Union[None, Unset, list[Any]] = UNSET
+    id: int | None | Unset = UNSET
+    public_primary_key: str | Unset = UNSET
+    description: None | str | Unset = ""
+    link: None | str | Unset = UNSET
+    incident_urgency: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.cron_heartbeat_state_schema import CronHeartbeatStateSchema
+        from ..models.cron_heartbeat_state_schema import CronHeartbeatStateSchema  # noqa: PLC0415
 
         states = []
         for states_item_data in self.states:
@@ -55,7 +56,7 @@ class HeartbeatSchema:
 
         service = self.service
 
-        id: Union[None, Unset, int]
+        id: int | None | Unset
         if isinstance(self.id, Unset):
             id = UNSET
         else:
@@ -63,32 +64,23 @@ class HeartbeatSchema:
 
         public_primary_key = self.public_primary_key
 
-        description: Union[None, Unset, str]
+        description: None | str | Unset
         if isinstance(self.description, Unset):
             description = UNSET
         else:
             description = self.description
 
-        link: Union[None, Unset, str]
+        link: None | str | Unset
         if isinstance(self.link, Unset):
             link = UNSET
         else:
             link = self.link
 
-        incident_urgency: Union[None, Unset, str]
+        incident_urgency: None | str | Unset
         if isinstance(self.incident_urgency, Unset):
             incident_urgency = UNSET
         else:
             incident_urgency = self.incident_urgency
-
-        labels: Union[None, Unset, list[Any]]
-        if isinstance(self.labels, Unset):
-            labels = UNSET
-        elif isinstance(self.labels, list):
-            labels = self.labels
-
-        else:
-            labels = self.labels
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -109,29 +101,27 @@ class HeartbeatSchema:
             field_dict["link"] = link
         if incident_urgency is not UNSET:
             field_dict["incident_urgency"] = incident_urgency
-        if labels is not UNSET:
-            field_dict["labels"] = labels
 
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
-        from ..models.cron_heartbeat_state_schema import CronHeartbeatStateSchema
-        from ..models.interval_heartbeat_state_schema import IntervalHeartbeatStateSchema
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.cron_heartbeat_state_schema import CronHeartbeatStateSchema  # noqa: PLC0415
+        from ..models.interval_heartbeat_state_schema import IntervalHeartbeatStateSchema  # noqa: PLC0415
 
-        d = src_dict.copy()
+        d = dict(src_dict)
         states = []
         _states = d.pop("states")
         for states_item_data in _states:
 
-            def _parse_states_item(data: object) -> Union["CronHeartbeatStateSchema", "IntervalHeartbeatStateSchema"]:
+            def _parse_states_item(data: object) -> CronHeartbeatStateSchema | IntervalHeartbeatStateSchema:
                 try:
                     if not isinstance(data, dict):
                         raise TypeError()
                     states_item_type_0 = CronHeartbeatStateSchema.from_dict(data)
 
                     return states_item_type_0
-                except:  # noqa: E722
+                except (TypeError, ValueError, AttributeError, KeyError):
                     pass
                 if not isinstance(data, dict):
                     raise TypeError()
@@ -147,60 +137,43 @@ class HeartbeatSchema:
 
         service = d.pop("service")
 
-        def _parse_id(data: object) -> Union[None, Unset, int]:
+        def _parse_id(data: object) -> int | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, int], data)
+            return cast(int | None | Unset, data)
 
         id = _parse_id(d.pop("id", UNSET))
 
         public_primary_key = d.pop("public_primary_key", UNSET)
 
-        def _parse_description(data: object) -> Union[None, Unset, str]:
+        def _parse_description(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         description = _parse_description(d.pop("description", UNSET))
 
-        def _parse_link(data: object) -> Union[None, Unset, str]:
+        def _parse_link(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         link = _parse_link(d.pop("link", UNSET))
 
-        def _parse_incident_urgency(data: object) -> Union[None, Unset, str]:
+        def _parse_incident_urgency(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         incident_urgency = _parse_incident_urgency(d.pop("incident_urgency", UNSET))
-
-        def _parse_labels(data: object) -> Union[None, Unset, list[Any]]:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, list):
-                    raise TypeError()
-                labels_type_0 = cast(list[Any], data)
-
-                return labels_type_0
-            except:  # noqa: E722
-                pass
-            return cast(Union[None, Unset, list[Any]], data)
-
-        labels = _parse_labels(d.pop("labels", UNSET))
 
         heartbeat_schema = cls(
             states=states,
@@ -211,7 +184,6 @@ class HeartbeatSchema:
             description=description,
             link=link,
             incident_urgency=incident_urgency,
-            labels=labels,
         )
 
         heartbeat_schema.additional_properties = d

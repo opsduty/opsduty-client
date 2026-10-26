@@ -1,4 +1,7 @@
-from typing import Any, TypeVar, Union, cast
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
@@ -11,14 +14,14 @@ T = TypeVar("T", bound="HeartBeatFilter")
 class HeartBeatFilter:
     """
     Attributes:
-        service (Union[None, Unset, int]):
+        service (int | None | Unset):
     """
 
-    service: Union[None, Unset, int] = UNSET
+    service: int | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        service: Union[None, Unset, int]
+        service: int | None | Unset
         if isinstance(self.service, Unset):
             service = UNSET
         else:
@@ -33,15 +36,15 @@ class HeartBeatFilter:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
 
-        def _parse_service(data: object) -> Union[None, Unset, int]:
+        def _parse_service(data: object) -> int | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, int], data)
+            return cast(int | None | Unset, data)
 
         service = _parse_service(d.pop("service", UNSET))
 

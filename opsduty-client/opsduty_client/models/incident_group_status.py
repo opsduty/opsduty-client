@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class IncidentGroupStatus(str, Enum):
+class IncidentGroupStatus(StrEnum):
     ACKNOWLEDGED = "acknowledged"
     RESOLVED = "resolved"
     SILENCED = "silenced"

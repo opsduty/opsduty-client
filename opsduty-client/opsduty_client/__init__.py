@@ -1,4 +1,4 @@
-"""A client library for accessing opsduty"""
+"""A client library for accessing OpsDuty API"""
 
 from .client import AuthenticatedClient, Client
 

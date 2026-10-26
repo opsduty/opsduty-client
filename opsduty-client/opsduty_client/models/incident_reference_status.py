@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class IncidentReferenceStatus(str, Enum):
+class IncidentReferenceStatus(StrEnum):
     COMPLETED = "completed"
     FAILED = "failed"
     PENDING = "pending"

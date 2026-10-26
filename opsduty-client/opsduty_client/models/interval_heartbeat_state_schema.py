@@ -1,4 +1,7 @@
-from typing import Any, Literal, TypeVar, Union, cast
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import Any, Literal, TypeVar, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
@@ -13,20 +16,20 @@ class IntervalHeartbeatStateSchema:
     Attributes:
         type_ (Literal['interval']):
         interval_seconds (int):
-        id (Union[None, Unset, int]):
-        environment (Union[None, Unset, str]):
-        muted (Union[Unset, bool]):  Default: False.
-        resolve_incident (Union[Unset, bool]):  Default: True.
-        timeout_seconds (Union[Unset, int]):  Default: 0.
+        id (int | None | Unset):
+        environment (None | str | Unset):
+        muted (bool | Unset):  Default: False.
+        resolve_incident (bool | Unset):  Default: True.
+        timeout_seconds (int | Unset):  Default: 0.
     """
 
     type_: Literal["interval"]
     interval_seconds: int
-    id: Union[None, Unset, int] = UNSET
-    environment: Union[None, Unset, str] = UNSET
-    muted: Union[Unset, bool] = False
-    resolve_incident: Union[Unset, bool] = True
-    timeout_seconds: Union[Unset, int] = 0
+    id: int | None | Unset = UNSET
+    environment: None | str | Unset = UNSET
+    muted: bool | Unset = False
+    resolve_incident: bool | Unset = True
+    timeout_seconds: int | Unset = 0
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -34,13 +37,13 @@ class IntervalHeartbeatStateSchema:
 
         interval_seconds = self.interval_seconds
 
-        id: Union[None, Unset, int]
+        id: int | None | Unset
         if isinstance(self.id, Unset):
             id = UNSET
         else:
             id = self.id
 
-        environment: Union[None, Unset, str]
+        environment: None | str | Unset
         if isinstance(self.environment, Unset):
             environment = UNSET
         else:
@@ -74,29 +77,29 @@ class IntervalHeartbeatStateSchema:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         type_ = cast(Literal["interval"], d.pop("type"))
         if type_ != "interval":
             raise ValueError(f"type must match const 'interval', got '{type_}'")
 
         interval_seconds = d.pop("interval_seconds")
 
-        def _parse_id(data: object) -> Union[None, Unset, int]:
+        def _parse_id(data: object) -> int | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, int], data)
+            return cast(int | None | Unset, data)
 
         id = _parse_id(d.pop("id", UNSET))
 
-        def _parse_environment(data: object) -> Union[None, Unset, str]:
+        def _parse_environment(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         environment = _parse_environment(d.pop("environment", UNSET))
 

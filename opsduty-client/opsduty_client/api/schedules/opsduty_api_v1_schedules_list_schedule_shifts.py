@@ -1,11 +1,15 @@
 import datetime
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
+from urllib.parse import quote
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.opsduty_api_v1_schedules_list_schedule_shifts_response_401 import OpsdutyApiV1SchedulesListScheduleShiftsResponse401
+from ...models.opsduty_api_v1_schedules_list_schedule_shifts_response_404 import OpsdutyApiV1SchedulesListScheduleShiftsResponse404
+from ...models.opsduty_api_v1_schedules_list_schedule_shifts_response_422 import OpsdutyApiV1SchedulesListScheduleShiftsResponse422
 from ...models.schedule_shift_schema import ScheduleShiftSchema
 from ...types import UNSET, Response, Unset
 
@@ -15,7 +19,7 @@ def _get_kwargs(
     *,
     datetime_start: datetime.datetime,
     datetime_end: datetime.datetime,
-    overflow: Union[Unset, bool] = True,
+    overflow: bool | Unset = True,
 ) -> dict[str, Any]:
     params: dict[str, Any] = {}
 
@@ -32,7 +36,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/api/v1/schedules/{schedule_id}/shifts/".format(
-            schedule_id=schedule_id,
+            schedule_id=quote(str(schedule_id), safe=""),
         ),
         "params": params,
     }
@@ -40,7 +44,9 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[list["ScheduleShiftSchema"]]:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> OpsdutyApiV1SchedulesListScheduleShiftsResponse401 | OpsdutyApiV1SchedulesListScheduleShiftsResponse404 | OpsdutyApiV1SchedulesListScheduleShiftsResponse422 | list[ScheduleShiftSchema] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -50,13 +56,31 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
             response_200.append(response_200_item)
 
         return response_200
+
+    if response.status_code == 401:
+        response_401 = OpsdutyApiV1SchedulesListScheduleShiftsResponse401.from_dict(response.json())
+
+        return response_401
+
+    if response.status_code == 404:
+        response_404 = OpsdutyApiV1SchedulesListScheduleShiftsResponse404.from_dict(response.json())
+
+        return response_404
+
+    if response.status_code == 422:
+        response_422 = OpsdutyApiV1SchedulesListScheduleShiftsResponse422.from_dict(response.json())
+
+        return response_422
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[list["ScheduleShiftSchema"]]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[OpsdutyApiV1SchedulesListScheduleShiftsResponse401 | OpsdutyApiV1SchedulesListScheduleShiftsResponse404 | OpsdutyApiV1SchedulesListScheduleShiftsResponse422 | list[ScheduleShiftSchema]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -71,22 +95,32 @@ def sync_detailed(
     client: AuthenticatedClient,
     datetime_start: datetime.datetime,
     datetime_end: datetime.datetime,
-    overflow: Union[Unset, bool] = True,
-) -> Response[list["ScheduleShiftSchema"]]:
-    """List Schedule Shifts
+    overflow: bool | Unset = True,
+) -> Response[OpsdutyApiV1SchedulesListScheduleShiftsResponse401 | OpsdutyApiV1SchedulesListScheduleShiftsResponse404 | OpsdutyApiV1SchedulesListScheduleShiftsResponse422 | list[ScheduleShiftSchema]]:
+    """List schedule shifts
+
+     Work out who is on call between two times, layers and overrides applied.
+
+    `datetime_start` and `datetime_end` are required and must be at most 120
+    days apart. Shifts are computed rather than stored, so this is not paged
+    and returns the whole range at once.
+
+    A shift that starts before the range or ends after it is returned with its
+    real handover times. Pass `overflow=false` to cut those shifts back to the
+    range you asked for instead.
 
     Args:
         schedule_id (int):
         datetime_start (datetime.datetime):
         datetime_end (datetime.datetime):
-        overflow (Union[Unset, bool]):  Default: True.
+        overflow (bool | Unset):  Default: True.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[list['ScheduleShiftSchema']]
+        Response[OpsdutyApiV1SchedulesListScheduleShiftsResponse401 | OpsdutyApiV1SchedulesListScheduleShiftsResponse404 | OpsdutyApiV1SchedulesListScheduleShiftsResponse422 | list[ScheduleShiftSchema]]
     """
 
     kwargs = _get_kwargs(
@@ -109,22 +143,32 @@ def sync(
     client: AuthenticatedClient,
     datetime_start: datetime.datetime,
     datetime_end: datetime.datetime,
-    overflow: Union[Unset, bool] = True,
-) -> Optional[list["ScheduleShiftSchema"]]:
-    """List Schedule Shifts
+    overflow: bool | Unset = True,
+) -> OpsdutyApiV1SchedulesListScheduleShiftsResponse401 | OpsdutyApiV1SchedulesListScheduleShiftsResponse404 | OpsdutyApiV1SchedulesListScheduleShiftsResponse422 | list[ScheduleShiftSchema] | None:
+    """List schedule shifts
+
+     Work out who is on call between two times, layers and overrides applied.
+
+    `datetime_start` and `datetime_end` are required and must be at most 120
+    days apart. Shifts are computed rather than stored, so this is not paged
+    and returns the whole range at once.
+
+    A shift that starts before the range or ends after it is returned with its
+    real handover times. Pass `overflow=false` to cut those shifts back to the
+    range you asked for instead.
 
     Args:
         schedule_id (int):
         datetime_start (datetime.datetime):
         datetime_end (datetime.datetime):
-        overflow (Union[Unset, bool]):  Default: True.
+        overflow (bool | Unset):  Default: True.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        list['ScheduleShiftSchema']
+        OpsdutyApiV1SchedulesListScheduleShiftsResponse401 | OpsdutyApiV1SchedulesListScheduleShiftsResponse404 | OpsdutyApiV1SchedulesListScheduleShiftsResponse422 | list[ScheduleShiftSchema]
     """
 
     return sync_detailed(
@@ -142,22 +186,32 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     datetime_start: datetime.datetime,
     datetime_end: datetime.datetime,
-    overflow: Union[Unset, bool] = True,
-) -> Response[list["ScheduleShiftSchema"]]:
-    """List Schedule Shifts
+    overflow: bool | Unset = True,
+) -> Response[OpsdutyApiV1SchedulesListScheduleShiftsResponse401 | OpsdutyApiV1SchedulesListScheduleShiftsResponse404 | OpsdutyApiV1SchedulesListScheduleShiftsResponse422 | list[ScheduleShiftSchema]]:
+    """List schedule shifts
+
+     Work out who is on call between two times, layers and overrides applied.
+
+    `datetime_start` and `datetime_end` are required and must be at most 120
+    days apart. Shifts are computed rather than stored, so this is not paged
+    and returns the whole range at once.
+
+    A shift that starts before the range or ends after it is returned with its
+    real handover times. Pass `overflow=false` to cut those shifts back to the
+    range you asked for instead.
 
     Args:
         schedule_id (int):
         datetime_start (datetime.datetime):
         datetime_end (datetime.datetime):
-        overflow (Union[Unset, bool]):  Default: True.
+        overflow (bool | Unset):  Default: True.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[list['ScheduleShiftSchema']]
+        Response[OpsdutyApiV1SchedulesListScheduleShiftsResponse401 | OpsdutyApiV1SchedulesListScheduleShiftsResponse404 | OpsdutyApiV1SchedulesListScheduleShiftsResponse422 | list[ScheduleShiftSchema]]
     """
 
     kwargs = _get_kwargs(
@@ -178,22 +232,32 @@ async def asyncio(
     client: AuthenticatedClient,
     datetime_start: datetime.datetime,
     datetime_end: datetime.datetime,
-    overflow: Union[Unset, bool] = True,
-) -> Optional[list["ScheduleShiftSchema"]]:
-    """List Schedule Shifts
+    overflow: bool | Unset = True,
+) -> OpsdutyApiV1SchedulesListScheduleShiftsResponse401 | OpsdutyApiV1SchedulesListScheduleShiftsResponse404 | OpsdutyApiV1SchedulesListScheduleShiftsResponse422 | list[ScheduleShiftSchema] | None:
+    """List schedule shifts
+
+     Work out who is on call between two times, layers and overrides applied.
+
+    `datetime_start` and `datetime_end` are required and must be at most 120
+    days apart. Shifts are computed rather than stored, so this is not paged
+    and returns the whole range at once.
+
+    A shift that starts before the range or ends after it is returned with its
+    real handover times. Pass `overflow=false` to cut those shifts back to the
+    range you asked for instead.
 
     Args:
         schedule_id (int):
         datetime_start (datetime.datetime):
         datetime_end (datetime.datetime):
-        overflow (Union[Unset, bool]):  Default: True.
+        overflow (bool | Unset):  Default: True.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        list['ScheduleShiftSchema']
+        OpsdutyApiV1SchedulesListScheduleShiftsResponse401 | OpsdutyApiV1SchedulesListScheduleShiftsResponse404 | OpsdutyApiV1SchedulesListScheduleShiftsResponse422 | list[ScheduleShiftSchema]
     """
 
     return (

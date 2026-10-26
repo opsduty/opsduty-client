@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import datetime
-from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..models.incident_group_status import IncidentGroupStatus
 from ..types import UNSET, Unset
@@ -20,37 +22,37 @@ class IncidentGroupDetailSchema:
     """
     Attributes:
         status (IncidentGroupStatus):
-        service (Union['IncidentGroupServiceSchema', None]):
-        notes (list['IncidentGroupDetailNoteSchema']):
+        service (IncidentGroupServiceSchema | None):
+        notes (list[IncidentGroupDetailNoteSchema]):
         created_at (datetime.datetime):
-        id (Union[None, Unset, int]):
-        incident_number (Union[Unset, int]):  Default: 0.
-        summary (Union[None, Unset, str]):
-        acknowledged_at (Union[None, Unset, datetime.datetime]):
-        resolved_at (Union[None, Unset, datetime.datetime]):
-        silenced_at (Union[None, Unset, datetime.datetime]):
-        last_status_change_at (Union[None, Unset, datetime.datetime]):
+        id (int | None | Unset):
+        incident_number (int | Unset):  Default: 0.
+        summary (None | str | Unset):
+        acknowledged_at (datetime.datetime | None | Unset):
+        resolved_at (datetime.datetime | None | Unset):
+        silenced_at (datetime.datetime | None | Unset):
+        last_status_change_at (datetime.datetime | None | Unset):
     """
 
     status: IncidentGroupStatus
-    service: Union["IncidentGroupServiceSchema", None]
-    notes: list["IncidentGroupDetailNoteSchema"]
+    service: IncidentGroupServiceSchema | None
+    notes: list[IncidentGroupDetailNoteSchema]
     created_at: datetime.datetime
-    id: Union[None, Unset, int] = UNSET
-    incident_number: Union[Unset, int] = 0
-    summary: Union[None, Unset, str] = UNSET
-    acknowledged_at: Union[None, Unset, datetime.datetime] = UNSET
-    resolved_at: Union[None, Unset, datetime.datetime] = UNSET
-    silenced_at: Union[None, Unset, datetime.datetime] = UNSET
-    last_status_change_at: Union[None, Unset, datetime.datetime] = UNSET
+    id: int | None | Unset = UNSET
+    incident_number: int | Unset = 0
+    summary: None | str | Unset = UNSET
+    acknowledged_at: datetime.datetime | None | Unset = UNSET
+    resolved_at: datetime.datetime | None | Unset = UNSET
+    silenced_at: datetime.datetime | None | Unset = UNSET
+    last_status_change_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.incident_group_service_schema import IncidentGroupServiceSchema
+        from ..models.incident_group_service_schema import IncidentGroupServiceSchema  # noqa: PLC0415
 
         status = self.status.value
 
-        service: Union[None, dict[str, Any]]
+        service: dict[str, Any] | None
         if isinstance(self.service, IncidentGroupServiceSchema):
             service = self.service.to_dict()
         else:
@@ -63,7 +65,7 @@ class IncidentGroupDetailSchema:
 
         created_at = self.created_at.isoformat()
 
-        id: Union[None, Unset, int]
+        id: int | None | Unset
         if isinstance(self.id, Unset):
             id = UNSET
         else:
@@ -71,13 +73,13 @@ class IncidentGroupDetailSchema:
 
         incident_number = self.incident_number
 
-        summary: Union[None, Unset, str]
+        summary: None | str | Unset
         if isinstance(self.summary, Unset):
             summary = UNSET
         else:
             summary = self.summary
 
-        acknowledged_at: Union[None, Unset, str]
+        acknowledged_at: None | str | Unset
         if isinstance(self.acknowledged_at, Unset):
             acknowledged_at = UNSET
         elif isinstance(self.acknowledged_at, datetime.datetime):
@@ -85,7 +87,7 @@ class IncidentGroupDetailSchema:
         else:
             acknowledged_at = self.acknowledged_at
 
-        resolved_at: Union[None, Unset, str]
+        resolved_at: None | str | Unset
         if isinstance(self.resolved_at, Unset):
             resolved_at = UNSET
         elif isinstance(self.resolved_at, datetime.datetime):
@@ -93,7 +95,7 @@ class IncidentGroupDetailSchema:
         else:
             resolved_at = self.resolved_at
 
-        silenced_at: Union[None, Unset, str]
+        silenced_at: None | str | Unset
         if isinstance(self.silenced_at, Unset):
             silenced_at = UNSET
         elif isinstance(self.silenced_at, datetime.datetime):
@@ -101,7 +103,7 @@ class IncidentGroupDetailSchema:
         else:
             silenced_at = self.silenced_at
 
-        last_status_change_at: Union[None, Unset, str]
+        last_status_change_at: None | str | Unset
         if isinstance(self.last_status_change_at, Unset):
             last_status_change_at = UNSET
         elif isinstance(self.last_status_change_at, datetime.datetime):
@@ -137,14 +139,14 @@ class IncidentGroupDetailSchema:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
-        from ..models.incident_group_detail_note_schema import IncidentGroupDetailNoteSchema
-        from ..models.incident_group_service_schema import IncidentGroupServiceSchema
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.incident_group_detail_note_schema import IncidentGroupDetailNoteSchema  # noqa: PLC0415
+        from ..models.incident_group_service_schema import IncidentGroupServiceSchema  # noqa: PLC0415
 
-        d = src_dict.copy()
+        d = dict(src_dict)
         status = IncidentGroupStatus(d.pop("status"))
 
-        def _parse_service(data: object) -> Union["IncidentGroupServiceSchema", None]:
+        def _parse_service(data: object) -> IncidentGroupServiceSchema | None:
             if data is None:
                 return data
             try:
@@ -153,9 +155,9 @@ class IncidentGroupDetailSchema:
                 service_type_0 = IncidentGroupServiceSchema.from_dict(data)
 
                 return service_type_0
-            except:  # noqa: E722
+            except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(Union["IncidentGroupServiceSchema", None], data)
+            return cast(IncidentGroupServiceSchema | None, data)
 
         service = _parse_service(d.pop("service"))
 
@@ -166,29 +168,29 @@ class IncidentGroupDetailSchema:
 
             notes.append(notes_item)
 
-        created_at = isoparse(d.pop("created_at"))
+        created_at = datetime.datetime.fromisoformat(d.pop("created_at"))
 
-        def _parse_id(data: object) -> Union[None, Unset, int]:
+        def _parse_id(data: object) -> int | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, int], data)
+            return cast(int | None | Unset, data)
 
         id = _parse_id(d.pop("id", UNSET))
 
         incident_number = d.pop("incident_number", UNSET)
 
-        def _parse_summary(data: object) -> Union[None, Unset, str]:
+        def _parse_summary(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         summary = _parse_summary(d.pop("summary", UNSET))
 
-        def _parse_acknowledged_at(data: object) -> Union[None, Unset, datetime.datetime]:
+        def _parse_acknowledged_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
@@ -196,16 +198,16 @@ class IncidentGroupDetailSchema:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                acknowledged_at_type_0 = isoparse(data)
+                acknowledged_at_type_0 = datetime.datetime.fromisoformat(data)
 
                 return acknowledged_at_type_0
-            except:  # noqa: E722
+            except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(Union[None, Unset, datetime.datetime], data)
+            return cast(datetime.datetime | None | Unset, data)
 
         acknowledged_at = _parse_acknowledged_at(d.pop("acknowledged_at", UNSET))
 
-        def _parse_resolved_at(data: object) -> Union[None, Unset, datetime.datetime]:
+        def _parse_resolved_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
@@ -213,16 +215,16 @@ class IncidentGroupDetailSchema:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                resolved_at_type_0 = isoparse(data)
+                resolved_at_type_0 = datetime.datetime.fromisoformat(data)
 
                 return resolved_at_type_0
-            except:  # noqa: E722
+            except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(Union[None, Unset, datetime.datetime], data)
+            return cast(datetime.datetime | None | Unset, data)
 
         resolved_at = _parse_resolved_at(d.pop("resolved_at", UNSET))
 
-        def _parse_silenced_at(data: object) -> Union[None, Unset, datetime.datetime]:
+        def _parse_silenced_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
@@ -230,16 +232,16 @@ class IncidentGroupDetailSchema:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                silenced_at_type_0 = isoparse(data)
+                silenced_at_type_0 = datetime.datetime.fromisoformat(data)
 
                 return silenced_at_type_0
-            except:  # noqa: E722
+            except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(Union[None, Unset, datetime.datetime], data)
+            return cast(datetime.datetime | None | Unset, data)
 
         silenced_at = _parse_silenced_at(d.pop("silenced_at", UNSET))
 
-        def _parse_last_status_change_at(data: object) -> Union[None, Unset, datetime.datetime]:
+        def _parse_last_status_change_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
@@ -247,12 +249,12 @@ class IncidentGroupDetailSchema:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                last_status_change_at_type_0 = isoparse(data)
+                last_status_change_at_type_0 = datetime.datetime.fromisoformat(data)
 
                 return last_status_change_at_type_0
-            except:  # noqa: E722
+            except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(Union[None, Unset, datetime.datetime], data)
+            return cast(datetime.datetime | None | Unset, data)
 
         last_status_change_at = _parse_last_status_change_at(d.pop("last_status_change_at", UNSET))
 

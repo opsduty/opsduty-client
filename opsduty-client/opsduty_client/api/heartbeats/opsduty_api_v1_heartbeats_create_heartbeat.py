@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
 
 import httpx
 
@@ -7,6 +7,8 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.create_heartbeat_input import CreateHeartbeatInput
 from ...models.heartbeat_schema import HeartbeatSchema
+from ...models.opsduty_api_v1_heartbeats_create_heartbeat_response_401 import OpsdutyApiV1HeartbeatsCreateHeartbeatResponse401
+from ...models.opsduty_api_v1_heartbeats_create_heartbeat_response_422 import OpsdutyApiV1HeartbeatsCreateHeartbeatResponse422
 from ...types import Response
 
 
@@ -21,27 +23,37 @@ def _get_kwargs(
         "url": "/api/v1/heartbeats/",
     }
 
-    _body = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
-    _kwargs["json"] = _body
     headers["Content-Type"] = "application/json"
 
     _kwargs["headers"] = headers
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[HeartbeatSchema]:
+def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> HeartbeatSchema | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse422 | None:
     if response.status_code == 201:
         response_201 = HeartbeatSchema.from_dict(response.json())
 
         return response_201
+
+    if response.status_code == 401:
+        response_401 = OpsdutyApiV1HeartbeatsCreateHeartbeatResponse401.from_dict(response.json())
+
+        return response_401
+
+    if response.status_code == 422:
+        response_422 = OpsdutyApiV1HeartbeatsCreateHeartbeatResponse422.from_dict(response.json())
+
+        return response_422
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[HeartbeatSchema]:
+def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[HeartbeatSchema | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse422]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -54,8 +66,17 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: CreateHeartbeatInput,
-) -> Response[HeartbeatSchema]:
-    """Create Heartbeat
+) -> Response[HeartbeatSchema | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse422]:
+    """Create a heartbeat
+
+     Register a job you want to watch.
+
+    This does not start watching on its own. Add at least one environment with
+    `POST /api/v1/heartbeats/states/` to say how often the job should check in
+    and where to send the check-in.
+
+    Missed check-ins raise an incident on `service`, which decides who is
+    paged. `incident_urgency` overrides the service default.
 
     Args:
         body (CreateHeartbeatInput):
@@ -65,7 +86,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HeartbeatSchema]
+        Response[HeartbeatSchema | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse422]
     """
 
     kwargs = _get_kwargs(
@@ -83,8 +104,17 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: CreateHeartbeatInput,
-) -> Optional[HeartbeatSchema]:
-    """Create Heartbeat
+) -> HeartbeatSchema | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse422 | None:
+    """Create a heartbeat
+
+     Register a job you want to watch.
+
+    This does not start watching on its own. Add at least one environment with
+    `POST /api/v1/heartbeats/states/` to say how often the job should check in
+    and where to send the check-in.
+
+    Missed check-ins raise an incident on `service`, which decides who is
+    paged. `incident_urgency` overrides the service default.
 
     Args:
         body (CreateHeartbeatInput):
@@ -94,7 +124,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HeartbeatSchema
+        HeartbeatSchema | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse422
     """
 
     return sync_detailed(
@@ -107,8 +137,17 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: CreateHeartbeatInput,
-) -> Response[HeartbeatSchema]:
-    """Create Heartbeat
+) -> Response[HeartbeatSchema | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse422]:
+    """Create a heartbeat
+
+     Register a job you want to watch.
+
+    This does not start watching on its own. Add at least one environment with
+    `POST /api/v1/heartbeats/states/` to say how often the job should check in
+    and where to send the check-in.
+
+    Missed check-ins raise an incident on `service`, which decides who is
+    paged. `incident_urgency` overrides the service default.
 
     Args:
         body (CreateHeartbeatInput):
@@ -118,7 +157,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HeartbeatSchema]
+        Response[HeartbeatSchema | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse422]
     """
 
     kwargs = _get_kwargs(
@@ -134,8 +173,17 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: CreateHeartbeatInput,
-) -> Optional[HeartbeatSchema]:
-    """Create Heartbeat
+) -> HeartbeatSchema | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse422 | None:
+    """Create a heartbeat
+
+     Register a job you want to watch.
+
+    This does not start watching on its own. Add at least one environment with
+    `POST /api/v1/heartbeats/states/` to say how often the job should check in
+    and where to send the check-in.
+
+    Missed check-ins raise an incident on `service`, which decides who is
+    paged. `incident_urgency` overrides the service default.
 
     Args:
         body (CreateHeartbeatInput):
@@ -145,7 +193,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HeartbeatSchema
+        HeartbeatSchema | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsCreateHeartbeatResponse422
     """
 
     return (

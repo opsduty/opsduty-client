@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import datetime
+from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
-from dateutil.parser import isoparse
 
 if TYPE_CHECKING:
     from ..models.schedule_shift_user_schema import ScheduleShiftUserSchema
@@ -17,12 +19,12 @@ class ScheduleShiftSchema:
     Attributes:
         start (datetime.datetime):
         end (datetime.datetime):
-        users (list['ScheduleShiftUserSchema']):
+        users (list[ScheduleShiftUserSchema]):
     """
 
     start: datetime.datetime
     end: datetime.datetime
-    users: list["ScheduleShiftUserSchema"]
+    users: list[ScheduleShiftUserSchema]
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -48,13 +50,13 @@ class ScheduleShiftSchema:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
-        from ..models.schedule_shift_user_schema import ScheduleShiftUserSchema
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.schedule_shift_user_schema import ScheduleShiftUserSchema  # noqa: PLC0415
 
-        d = src_dict.copy()
-        start = isoparse(d.pop("start"))
+        d = dict(src_dict)
+        start = datetime.datetime.fromisoformat(d.pop("start"))
 
-        end = isoparse(d.pop("end"))
+        end = datetime.datetime.fromisoformat(d.pop("end"))
 
         users = []
         _users = d.pop("users")

@@ -1,4 +1,7 @@
-from typing import Any, TypeVar, Union, cast
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
@@ -11,30 +14,39 @@ T = TypeVar("T", bound="Input")
 class Input:
     """
     Attributes:
-        page_size (Union[None, Unset, int]):
-        before (Union[None, Unset, str]):
-        after (Union[None, Unset, str]):
+        first (int | None | Unset): How many items to return from the start of the list, or after `after`.
+        last (int | None | Unset): How many items to return from the end of the list, or before `before`. They are still
+            in list order.
+        before (None | str | Unset): A `start_cursor` to page back from.
+        after (None | str | Unset): An `end_cursor` to page on from.
     """
 
-    page_size: Union[None, Unset, int] = UNSET
-    before: Union[None, Unset, str] = UNSET
-    after: Union[None, Unset, str] = UNSET
+    first: int | None | Unset = UNSET
+    last: int | None | Unset = UNSET
+    before: None | str | Unset = UNSET
+    after: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        page_size: Union[None, Unset, int]
-        if isinstance(self.page_size, Unset):
-            page_size = UNSET
+        first: int | None | Unset
+        if isinstance(self.first, Unset):
+            first = UNSET
         else:
-            page_size = self.page_size
+            first = self.first
 
-        before: Union[None, Unset, str]
+        last: int | None | Unset
+        if isinstance(self.last, Unset):
+            last = UNSET
+        else:
+            last = self.last
+
+        before: None | str | Unset
         if isinstance(self.before, Unset):
             before = UNSET
         else:
             before = self.before
 
-        after: Union[None, Unset, str]
+        after: None | str | Unset
         if isinstance(self.after, Unset):
             after = UNSET
         else:
@@ -43,8 +55,10 @@ class Input:
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if page_size is not UNSET:
-            field_dict["page_size"] = page_size
+        if first is not UNSET:
+            field_dict["first"] = first
+        if last is not UNSET:
+            field_dict["last"] = last
         if before is not UNSET:
             field_dict["before"] = before
         if after is not UNSET:
@@ -53,38 +67,48 @@ class Input:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
 
-        def _parse_page_size(data: object) -> Union[None, Unset, int]:
+        def _parse_first(data: object) -> int | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, int], data)
+            return cast(int | None | Unset, data)
 
-        page_size = _parse_page_size(d.pop("page_size", UNSET))
+        first = _parse_first(d.pop("first", UNSET))
 
-        def _parse_before(data: object) -> Union[None, Unset, str]:
+        def _parse_last(data: object) -> int | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(int | None | Unset, data)
+
+        last = _parse_last(d.pop("last", UNSET))
+
+        def _parse_before(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
 
         before = _parse_before(d.pop("before", UNSET))
 
-        def _parse_after(data: object) -> Union[None, Unset, str]:
+        def _parse_after(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         after = _parse_after(d.pop("after", UNSET))
 
         input_ = cls(
-            page_size=page_size,
+            first=first,
+            last=last,
             before=before,
             after=after,
         )
