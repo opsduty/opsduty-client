@@ -1,0 +1,248 @@
+from http import HTTPStatus
+from typing import Any
+
+import httpx
+
+from ... import errors
+from ...client import AuthenticatedClient, Client
+from ...models.opsduty_api_v1_statuspages_list_status_pages_response_401 import OpsdutyApiV1StatuspagesListStatusPagesResponse401
+from ...models.opsduty_api_v1_statuspages_list_status_pages_response_422 import OpsdutyApiV1StatuspagesListStatusPagesResponse422
+from ...models.paged_status_page_schema import PagedStatusPageSchema
+from ...types import UNSET, Response, Unset
+
+
+def _get_kwargs(
+    *,
+    first: int | None | Unset = UNSET,
+    last: int | None | Unset = UNSET,
+    before: None | str | Unset = UNSET,
+    after: None | str | Unset = UNSET,
+) -> dict[str, Any]:
+    params: dict[str, Any] = {}
+
+    json_first: int | None | Unset
+    if isinstance(first, Unset):
+        json_first = UNSET
+    else:
+        json_first = first
+    params["first"] = json_first
+
+    json_last: int | None | Unset
+    if isinstance(last, Unset):
+        json_last = UNSET
+    else:
+        json_last = last
+    params["last"] = json_last
+
+    json_before: None | str | Unset
+    if isinstance(before, Unset):
+        json_before = UNSET
+    else:
+        json_before = before
+    params["before"] = json_before
+
+    json_after: None | str | Unset
+    if isinstance(after, Unset):
+        json_after = UNSET
+    else:
+        json_after = after
+    params["after"] = json_after
+
+    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
+
+    _kwargs: dict[str, Any] = {
+        "method": "get",
+        "url": "/api/v1/statuspages/",
+        "params": params,
+    }
+
+    return _kwargs
+
+
+def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> OpsdutyApiV1StatuspagesListStatusPagesResponse401 | OpsdutyApiV1StatuspagesListStatusPagesResponse422 | PagedStatusPageSchema | None:
+    if response.status_code == 200:
+        response_200 = PagedStatusPageSchema.from_dict(response.json())
+
+        return response_200
+
+    if response.status_code == 401:
+        response_401 = OpsdutyApiV1StatuspagesListStatusPagesResponse401.from_dict(response.json())
+
+        return response_401
+
+    if response.status_code == 422:
+        response_422 = OpsdutyApiV1StatuspagesListStatusPagesResponse422.from_dict(response.json())
+
+        return response_422
+
+    if client.raise_on_unexpected_status:
+        raise errors.UnexpectedStatus(response.status_code, response.content)
+    else:
+        return None
+
+
+def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[OpsdutyApiV1StatuspagesListStatusPagesResponse401 | OpsdutyApiV1StatuspagesListStatusPagesResponse422 | PagedStatusPageSchema]:
+    return Response(
+        status_code=HTTPStatus(response.status_code),
+        content=response.content,
+        headers=response.headers,
+        parsed=_parse_response(client=client, response=response),
+    )
+
+
+def sync_detailed(
+    *,
+    client: AuthenticatedClient,
+    first: int | None | Unset = UNSET,
+    last: int | None | Unset = UNSET,
+    before: None | str | Unset = UNSET,
+    after: None | str | Unset = UNSET,
+) -> Response[OpsdutyApiV1StatuspagesListStatusPagesResponse401 | OpsdutyApiV1StatuspagesListStatusPagesResponse422 | PagedStatusPageSchema]:
+    """List status pages
+
+     List the status pages you can publish to.
+
+    Args:
+        first (int | None | Unset): How many items to return from the start of the list, or after
+            `after`.
+        last (int | None | Unset): How many items to return from the end of the list, or before
+            `before`. They are still in list order.
+        before (None | str | Unset): A `start_cursor` to page back from.
+        after (None | str | Unset): An `end_cursor` to page on from.
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[OpsdutyApiV1StatuspagesListStatusPagesResponse401 | OpsdutyApiV1StatuspagesListStatusPagesResponse422 | PagedStatusPageSchema]
+    """
+
+    kwargs = _get_kwargs(
+        first=first,
+        last=last,
+        before=before,
+        after=after,
+    )
+
+    response = client.get_httpx_client().request(
+        **kwargs,
+    )
+
+    return _build_response(client=client, response=response)
+
+
+def sync(
+    *,
+    client: AuthenticatedClient,
+    first: int | None | Unset = UNSET,
+    last: int | None | Unset = UNSET,
+    before: None | str | Unset = UNSET,
+    after: None | str | Unset = UNSET,
+) -> OpsdutyApiV1StatuspagesListStatusPagesResponse401 | OpsdutyApiV1StatuspagesListStatusPagesResponse422 | PagedStatusPageSchema | None:
+    """List status pages
+
+     List the status pages you can publish to.
+
+    Args:
+        first (int | None | Unset): How many items to return from the start of the list, or after
+            `after`.
+        last (int | None | Unset): How many items to return from the end of the list, or before
+            `before`. They are still in list order.
+        before (None | str | Unset): A `start_cursor` to page back from.
+        after (None | str | Unset): An `end_cursor` to page on from.
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        OpsdutyApiV1StatuspagesListStatusPagesResponse401 | OpsdutyApiV1StatuspagesListStatusPagesResponse422 | PagedStatusPageSchema
+    """
+
+    return sync_detailed(
+        client=client,
+        first=first,
+        last=last,
+        before=before,
+        after=after,
+    ).parsed
+
+
+async def asyncio_detailed(
+    *,
+    client: AuthenticatedClient,
+    first: int | None | Unset = UNSET,
+    last: int | None | Unset = UNSET,
+    before: None | str | Unset = UNSET,
+    after: None | str | Unset = UNSET,
+) -> Response[OpsdutyApiV1StatuspagesListStatusPagesResponse401 | OpsdutyApiV1StatuspagesListStatusPagesResponse422 | PagedStatusPageSchema]:
+    """List status pages
+
+     List the status pages you can publish to.
+
+    Args:
+        first (int | None | Unset): How many items to return from the start of the list, or after
+            `after`.
+        last (int | None | Unset): How many items to return from the end of the list, or before
+            `before`. They are still in list order.
+        before (None | str | Unset): A `start_cursor` to page back from.
+        after (None | str | Unset): An `end_cursor` to page on from.
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[OpsdutyApiV1StatuspagesListStatusPagesResponse401 | OpsdutyApiV1StatuspagesListStatusPagesResponse422 | PagedStatusPageSchema]
+    """
+
+    kwargs = _get_kwargs(
+        first=first,
+        last=last,
+        before=before,
+        after=after,
+    )
+
+    response = await client.get_async_httpx_client().request(**kwargs)
+
+    return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    *,
+    client: AuthenticatedClient,
+    first: int | None | Unset = UNSET,
+    last: int | None | Unset = UNSET,
+    before: None | str | Unset = UNSET,
+    after: None | str | Unset = UNSET,
+) -> OpsdutyApiV1StatuspagesListStatusPagesResponse401 | OpsdutyApiV1StatuspagesListStatusPagesResponse422 | PagedStatusPageSchema | None:
+    """List status pages
+
+     List the status pages you can publish to.
+
+    Args:
+        first (int | None | Unset): How many items to return from the start of the list, or after
+            `after`.
+        last (int | None | Unset): How many items to return from the end of the list, or before
+            `before`. They are still in list order.
+        before (None | str | Unset): A `start_cursor` to page back from.
+        after (None | str | Unset): An `end_cursor` to page on from.
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        OpsdutyApiV1StatuspagesListStatusPagesResponse401 | OpsdutyApiV1StatuspagesListStatusPagesResponse422 | PagedStatusPageSchema
+    """
+
+    return (
+        await asyncio_detailed(
+            client=client,
+            first=first,
+            last=last,
+            before=before,
+            after=after,
+        )
+    ).parsed

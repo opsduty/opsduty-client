@@ -1,11 +1,15 @@
 import datetime
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
+from urllib.parse import quote
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.opsduty_api_v1_schedules_list_schedule_overrides_response_401 import OpsdutyApiV1SchedulesListScheduleOverridesResponse401
+from ...models.opsduty_api_v1_schedules_list_schedule_overrides_response_404 import OpsdutyApiV1SchedulesListScheduleOverridesResponse404
+from ...models.opsduty_api_v1_schedules_list_schedule_overrides_response_422 import OpsdutyApiV1SchedulesListScheduleOverridesResponse422
 from ...models.paged_schedule_override_schema import PagedScheduleOverrideSchema
 from ...types import UNSET, Response, Unset
 
@@ -13,15 +17,16 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     schedule_id: int,
     *,
-    since: Union[None, Unset, datetime.datetime] = UNSET,
-    until: Union[None, Unset, datetime.datetime] = UNSET,
-    page_size: Union[None, Unset, int] = UNSET,
-    before: Union[None, Unset, str] = UNSET,
-    after: Union[None, Unset, str] = UNSET,
+    since: datetime.datetime | None | Unset = UNSET,
+    until: datetime.datetime | None | Unset = UNSET,
+    first: int | None | Unset = UNSET,
+    last: int | None | Unset = UNSET,
+    before: None | str | Unset = UNSET,
+    after: None | str | Unset = UNSET,
 ) -> dict[str, Any]:
     params: dict[str, Any] = {}
 
-    json_since: Union[None, Unset, str]
+    json_since: None | str | Unset
     if isinstance(since, Unset):
         json_since = UNSET
     elif isinstance(since, datetime.datetime):
@@ -30,7 +35,7 @@ def _get_kwargs(
         json_since = since
     params["since"] = json_since
 
-    json_until: Union[None, Unset, str]
+    json_until: None | str | Unset
     if isinstance(until, Unset):
         json_until = UNSET
     elif isinstance(until, datetime.datetime):
@@ -39,21 +44,28 @@ def _get_kwargs(
         json_until = until
     params["until"] = json_until
 
-    json_page_size: Union[None, Unset, int]
-    if isinstance(page_size, Unset):
-        json_page_size = UNSET
+    json_first: int | None | Unset
+    if isinstance(first, Unset):
+        json_first = UNSET
     else:
-        json_page_size = page_size
-    params["page_size"] = json_page_size
+        json_first = first
+    params["first"] = json_first
 
-    json_before: Union[None, Unset, str]
+    json_last: int | None | Unset
+    if isinstance(last, Unset):
+        json_last = UNSET
+    else:
+        json_last = last
+    params["last"] = json_last
+
+    json_before: None | str | Unset
     if isinstance(before, Unset):
         json_before = UNSET
     else:
         json_before = before
     params["before"] = json_before
 
-    json_after: Union[None, Unset, str]
+    json_after: None | str | Unset
     if isinstance(after, Unset):
         json_after = UNSET
     else:
@@ -65,7 +77,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/api/v1/schedules/{schedule_id}/overrides/".format(
-            schedule_id=schedule_id,
+            schedule_id=quote(str(schedule_id), safe=""),
         ),
         "params": params,
     }
@@ -73,18 +85,38 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[PagedScheduleOverrideSchema]:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> OpsdutyApiV1SchedulesListScheduleOverridesResponse401 | OpsdutyApiV1SchedulesListScheduleOverridesResponse404 | OpsdutyApiV1SchedulesListScheduleOverridesResponse422 | PagedScheduleOverrideSchema | None:
     if response.status_code == 200:
         response_200 = PagedScheduleOverrideSchema.from_dict(response.json())
 
         return response_200
+
+    if response.status_code == 401:
+        response_401 = OpsdutyApiV1SchedulesListScheduleOverridesResponse401.from_dict(response.json())
+
+        return response_401
+
+    if response.status_code == 404:
+        response_404 = OpsdutyApiV1SchedulesListScheduleOverridesResponse404.from_dict(response.json())
+
+        return response_404
+
+    if response.status_code == 422:
+        response_422 = OpsdutyApiV1SchedulesListScheduleOverridesResponse422.from_dict(response.json())
+
+        return response_422
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[PagedScheduleOverrideSchema]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[OpsdutyApiV1SchedulesListScheduleOverridesResponse401 | OpsdutyApiV1SchedulesListScheduleOverridesResponse404 | OpsdutyApiV1SchedulesListScheduleOverridesResponse422 | PagedScheduleOverrideSchema]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -97,35 +129,46 @@ def sync_detailed(
     schedule_id: int,
     *,
     client: AuthenticatedClient,
-    since: Union[None, Unset, datetime.datetime] = UNSET,
-    until: Union[None, Unset, datetime.datetime] = UNSET,
-    page_size: Union[None, Unset, int] = UNSET,
-    before: Union[None, Unset, str] = UNSET,
-    after: Union[None, Unset, str] = UNSET,
-) -> Response[PagedScheduleOverrideSchema]:
-    """List Schedule Overrides
+    since: datetime.datetime | None | Unset = UNSET,
+    until: datetime.datetime | None | Unset = UNSET,
+    first: int | None | Unset = UNSET,
+    last: int | None | Unset = UNSET,
+    before: None | str | Unset = UNSET,
+    after: None | str | Unset = UNSET,
+) -> Response[OpsdutyApiV1SchedulesListScheduleOverridesResponse401 | OpsdutyApiV1SchedulesListScheduleOverridesResponse404 | OpsdutyApiV1SchedulesListScheduleOverridesResponse422 | PagedScheduleOverrideSchema]:
+    """List schedule overrides
+
+     List the overrides on a schedule, earliest first.
+
+    An override hands a stretch of a rotation to one person, on top of the
+    layers. Narrow the list with `since` to drop overrides that already ended,
+    and `until` to drop ones that have not started.
 
     Args:
         schedule_id (int):
-        since (Union[None, Unset, datetime.datetime]):
-        until (Union[None, Unset, datetime.datetime]):
-        page_size (Union[None, Unset, int]):
-        before (Union[None, Unset, str]):
-        after (Union[None, Unset, str]):
+        since (datetime.datetime | None | Unset):
+        until (datetime.datetime | None | Unset):
+        first (int | None | Unset): How many items to return from the start of the list, or after
+            `after`.
+        last (int | None | Unset): How many items to return from the end of the list, or before
+            `before`. They are still in list order.
+        before (None | str | Unset): A `start_cursor` to page back from.
+        after (None | str | Unset): An `end_cursor` to page on from.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[PagedScheduleOverrideSchema]
+        Response[OpsdutyApiV1SchedulesListScheduleOverridesResponse401 | OpsdutyApiV1SchedulesListScheduleOverridesResponse404 | OpsdutyApiV1SchedulesListScheduleOverridesResponse422 | PagedScheduleOverrideSchema]
     """
 
     kwargs = _get_kwargs(
         schedule_id=schedule_id,
         since=since,
         until=until,
-        page_size=page_size,
+        first=first,
+        last=last,
         before=before,
         after=after,
     )
@@ -141,28 +184,38 @@ def sync(
     schedule_id: int,
     *,
     client: AuthenticatedClient,
-    since: Union[None, Unset, datetime.datetime] = UNSET,
-    until: Union[None, Unset, datetime.datetime] = UNSET,
-    page_size: Union[None, Unset, int] = UNSET,
-    before: Union[None, Unset, str] = UNSET,
-    after: Union[None, Unset, str] = UNSET,
-) -> Optional[PagedScheduleOverrideSchema]:
-    """List Schedule Overrides
+    since: datetime.datetime | None | Unset = UNSET,
+    until: datetime.datetime | None | Unset = UNSET,
+    first: int | None | Unset = UNSET,
+    last: int | None | Unset = UNSET,
+    before: None | str | Unset = UNSET,
+    after: None | str | Unset = UNSET,
+) -> OpsdutyApiV1SchedulesListScheduleOverridesResponse401 | OpsdutyApiV1SchedulesListScheduleOverridesResponse404 | OpsdutyApiV1SchedulesListScheduleOverridesResponse422 | PagedScheduleOverrideSchema | None:
+    """List schedule overrides
+
+     List the overrides on a schedule, earliest first.
+
+    An override hands a stretch of a rotation to one person, on top of the
+    layers. Narrow the list with `since` to drop overrides that already ended,
+    and `until` to drop ones that have not started.
 
     Args:
         schedule_id (int):
-        since (Union[None, Unset, datetime.datetime]):
-        until (Union[None, Unset, datetime.datetime]):
-        page_size (Union[None, Unset, int]):
-        before (Union[None, Unset, str]):
-        after (Union[None, Unset, str]):
+        since (datetime.datetime | None | Unset):
+        until (datetime.datetime | None | Unset):
+        first (int | None | Unset): How many items to return from the start of the list, or after
+            `after`.
+        last (int | None | Unset): How many items to return from the end of the list, or before
+            `before`. They are still in list order.
+        before (None | str | Unset): A `start_cursor` to page back from.
+        after (None | str | Unset): An `end_cursor` to page on from.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        PagedScheduleOverrideSchema
+        OpsdutyApiV1SchedulesListScheduleOverridesResponse401 | OpsdutyApiV1SchedulesListScheduleOverridesResponse404 | OpsdutyApiV1SchedulesListScheduleOverridesResponse422 | PagedScheduleOverrideSchema
     """
 
     return sync_detailed(
@@ -170,7 +223,8 @@ def sync(
         client=client,
         since=since,
         until=until,
-        page_size=page_size,
+        first=first,
+        last=last,
         before=before,
         after=after,
     ).parsed
@@ -180,35 +234,46 @@ async def asyncio_detailed(
     schedule_id: int,
     *,
     client: AuthenticatedClient,
-    since: Union[None, Unset, datetime.datetime] = UNSET,
-    until: Union[None, Unset, datetime.datetime] = UNSET,
-    page_size: Union[None, Unset, int] = UNSET,
-    before: Union[None, Unset, str] = UNSET,
-    after: Union[None, Unset, str] = UNSET,
-) -> Response[PagedScheduleOverrideSchema]:
-    """List Schedule Overrides
+    since: datetime.datetime | None | Unset = UNSET,
+    until: datetime.datetime | None | Unset = UNSET,
+    first: int | None | Unset = UNSET,
+    last: int | None | Unset = UNSET,
+    before: None | str | Unset = UNSET,
+    after: None | str | Unset = UNSET,
+) -> Response[OpsdutyApiV1SchedulesListScheduleOverridesResponse401 | OpsdutyApiV1SchedulesListScheduleOverridesResponse404 | OpsdutyApiV1SchedulesListScheduleOverridesResponse422 | PagedScheduleOverrideSchema]:
+    """List schedule overrides
+
+     List the overrides on a schedule, earliest first.
+
+    An override hands a stretch of a rotation to one person, on top of the
+    layers. Narrow the list with `since` to drop overrides that already ended,
+    and `until` to drop ones that have not started.
 
     Args:
         schedule_id (int):
-        since (Union[None, Unset, datetime.datetime]):
-        until (Union[None, Unset, datetime.datetime]):
-        page_size (Union[None, Unset, int]):
-        before (Union[None, Unset, str]):
-        after (Union[None, Unset, str]):
+        since (datetime.datetime | None | Unset):
+        until (datetime.datetime | None | Unset):
+        first (int | None | Unset): How many items to return from the start of the list, or after
+            `after`.
+        last (int | None | Unset): How many items to return from the end of the list, or before
+            `before`. They are still in list order.
+        before (None | str | Unset): A `start_cursor` to page back from.
+        after (None | str | Unset): An `end_cursor` to page on from.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[PagedScheduleOverrideSchema]
+        Response[OpsdutyApiV1SchedulesListScheduleOverridesResponse401 | OpsdutyApiV1SchedulesListScheduleOverridesResponse404 | OpsdutyApiV1SchedulesListScheduleOverridesResponse422 | PagedScheduleOverrideSchema]
     """
 
     kwargs = _get_kwargs(
         schedule_id=schedule_id,
         since=since,
         until=until,
-        page_size=page_size,
+        first=first,
+        last=last,
         before=before,
         after=after,
     )
@@ -222,28 +287,38 @@ async def asyncio(
     schedule_id: int,
     *,
     client: AuthenticatedClient,
-    since: Union[None, Unset, datetime.datetime] = UNSET,
-    until: Union[None, Unset, datetime.datetime] = UNSET,
-    page_size: Union[None, Unset, int] = UNSET,
-    before: Union[None, Unset, str] = UNSET,
-    after: Union[None, Unset, str] = UNSET,
-) -> Optional[PagedScheduleOverrideSchema]:
-    """List Schedule Overrides
+    since: datetime.datetime | None | Unset = UNSET,
+    until: datetime.datetime | None | Unset = UNSET,
+    first: int | None | Unset = UNSET,
+    last: int | None | Unset = UNSET,
+    before: None | str | Unset = UNSET,
+    after: None | str | Unset = UNSET,
+) -> OpsdutyApiV1SchedulesListScheduleOverridesResponse401 | OpsdutyApiV1SchedulesListScheduleOverridesResponse404 | OpsdutyApiV1SchedulesListScheduleOverridesResponse422 | PagedScheduleOverrideSchema | None:
+    """List schedule overrides
+
+     List the overrides on a schedule, earliest first.
+
+    An override hands a stretch of a rotation to one person, on top of the
+    layers. Narrow the list with `since` to drop overrides that already ended,
+    and `until` to drop ones that have not started.
 
     Args:
         schedule_id (int):
-        since (Union[None, Unset, datetime.datetime]):
-        until (Union[None, Unset, datetime.datetime]):
-        page_size (Union[None, Unset, int]):
-        before (Union[None, Unset, str]):
-        after (Union[None, Unset, str]):
+        since (datetime.datetime | None | Unset):
+        until (datetime.datetime | None | Unset):
+        first (int | None | Unset): How many items to return from the start of the list, or after
+            `after`.
+        last (int | None | Unset): How many items to return from the end of the list, or before
+            `before`. They are still in list order.
+        before (None | str | Unset): A `start_cursor` to page back from.
+        after (None | str | Unset): An `end_cursor` to page on from.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        PagedScheduleOverrideSchema
+        OpsdutyApiV1SchedulesListScheduleOverridesResponse401 | OpsdutyApiV1SchedulesListScheduleOverridesResponse404 | OpsdutyApiV1SchedulesListScheduleOverridesResponse422 | PagedScheduleOverrideSchema
     """
 
     return (
@@ -252,7 +327,8 @@ async def asyncio(
             client=client,
             since=since,
             until=until,
-            page_size=page_size,
+            first=first,
+            last=last,
             before=before,
             after=after,
         )

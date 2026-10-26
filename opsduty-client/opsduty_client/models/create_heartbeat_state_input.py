@@ -1,4 +1,7 @@
-from typing import Any, TypeVar, Union, cast
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
@@ -18,9 +21,9 @@ class CreateHeartbeatStateInput:
         timeout_seconds (int):
         muted (bool):
         resolve_incident (bool):
-        cron_expression (Union[None, Unset, str]):
-        cron_timezone (Union[None, Unset, str]):
-        interval_seconds (Union[None, Unset, int]):
+        cron_expression (None | str | Unset):
+        cron_timezone (None | str | Unset):
+        interval_seconds (int | None | Unset):
     """
 
     heartbeat_id: int
@@ -29,9 +32,9 @@ class CreateHeartbeatStateInput:
     timeout_seconds: int
     muted: bool
     resolve_incident: bool
-    cron_expression: Union[None, Unset, str] = UNSET
-    cron_timezone: Union[None, Unset, str] = UNSET
-    interval_seconds: Union[None, Unset, int] = UNSET
+    cron_expression: None | str | Unset = UNSET
+    cron_timezone: None | str | Unset = UNSET
+    interval_seconds: int | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -47,19 +50,19 @@ class CreateHeartbeatStateInput:
 
         resolve_incident = self.resolve_incident
 
-        cron_expression: Union[None, Unset, str]
+        cron_expression: None | str | Unset
         if isinstance(self.cron_expression, Unset):
             cron_expression = UNSET
         else:
             cron_expression = self.cron_expression
 
-        cron_timezone: Union[None, Unset, str]
+        cron_timezone: None | str | Unset
         if isinstance(self.cron_timezone, Unset):
             cron_timezone = UNSET
         else:
             cron_timezone = self.cron_timezone
 
-        interval_seconds: Union[None, Unset, int]
+        interval_seconds: int | None | Unset
         if isinstance(self.interval_seconds, Unset):
             interval_seconds = UNSET
         else:
@@ -87,8 +90,8 @@ class CreateHeartbeatStateInput:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         heartbeat_id = d.pop("heartbeat_id")
 
         environment = d.pop("environment")
@@ -101,30 +104,30 @@ class CreateHeartbeatStateInput:
 
         resolve_incident = d.pop("resolve_incident")
 
-        def _parse_cron_expression(data: object) -> Union[None, Unset, str]:
+        def _parse_cron_expression(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         cron_expression = _parse_cron_expression(d.pop("cron_expression", UNSET))
 
-        def _parse_cron_timezone(data: object) -> Union[None, Unset, str]:
+        def _parse_cron_timezone(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         cron_timezone = _parse_cron_timezone(d.pop("cron_timezone", UNSET))
 
-        def _parse_interval_seconds(data: object) -> Union[None, Unset, int]:
+        def _parse_interval_seconds(data: object) -> int | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, int], data)
+            return cast(int | None | Unset, data)
 
         interval_seconds = _parse_interval_seconds(d.pop("interval_seconds", UNSET))
 

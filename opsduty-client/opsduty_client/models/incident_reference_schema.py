@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import datetime
-from typing import Any, TypeVar, Union, cast
+from collections.abc import Mapping
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..models.incident_reference_status import IncidentReferenceStatus
 from ..types import UNSET, Unset
@@ -17,17 +19,17 @@ class IncidentReferenceSchema:
         status (IncidentReferenceStatus): The status of an incident reference.
         created_at (datetime.datetime):
         updated_at (datetime.datetime):
-        id (Union[None, Unset, str]):
-        reason (Union[None, Unset, str]):
-        incident_group (Union[None, Unset, int]):
+        id (None | str | Unset):
+        reason (None | str | Unset):
+        incident_group (int | None | Unset):
     """
 
     status: IncidentReferenceStatus
     created_at: datetime.datetime
     updated_at: datetime.datetime
-    id: Union[None, Unset, str] = UNSET
-    reason: Union[None, Unset, str] = UNSET
-    incident_group: Union[None, Unset, int] = UNSET
+    id: None | str | Unset = UNSET
+    reason: None | str | Unset = UNSET
+    incident_group: int | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -37,19 +39,19 @@ class IncidentReferenceSchema:
 
         updated_at = self.updated_at.isoformat()
 
-        id: Union[None, Unset, str]
+        id: None | str | Unset
         if isinstance(self.id, Unset):
             id = UNSET
         else:
             id = self.id
 
-        reason: Union[None, Unset, str]
+        reason: None | str | Unset
         if isinstance(self.reason, Unset):
             reason = UNSET
         else:
             reason = self.reason
 
-        incident_group: Union[None, Unset, int]
+        incident_group: int | None | Unset
         if isinstance(self.incident_group, Unset):
             incident_group = UNSET
         else:
@@ -74,38 +76,38 @@ class IncidentReferenceSchema:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         status = IncidentReferenceStatus(d.pop("status"))
 
-        created_at = isoparse(d.pop("created_at"))
+        created_at = datetime.datetime.fromisoformat(d.pop("created_at"))
 
-        updated_at = isoparse(d.pop("updated_at"))
+        updated_at = datetime.datetime.fromisoformat(d.pop("updated_at"))
 
-        def _parse_id(data: object) -> Union[None, Unset, str]:
+        def _parse_id(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         id = _parse_id(d.pop("id", UNSET))
 
-        def _parse_reason(data: object) -> Union[None, Unset, str]:
+        def _parse_reason(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         reason = _parse_reason(d.pop("reason", UNSET))
 
-        def _parse_incident_group(data: object) -> Union[None, Unset, int]:
+        def _parse_incident_group(data: object) -> int | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, int], data)
+            return cast(int | None | Unset, data)
 
         incident_group = _parse_incident_group(d.pop("incident_group", UNSET))
 

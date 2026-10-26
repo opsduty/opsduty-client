@@ -1,4 +1,7 @@
-from typing import Any, TypeVar, Union, cast
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
@@ -15,17 +18,15 @@ class CreateHeartbeatInput:
         name (str):
         description (str):
         service (int):
-        link (Union[None, Unset, str]):
-        incident_urgency (Union[IncidentUrgency, None, Unset]):
-        labels (Union[Unset, list[str]]):
+        link (None | str | Unset):
+        incident_urgency (IncidentUrgency | None | Unset):
     """
 
     name: str
     description: str
     service: int
-    link: Union[None, Unset, str] = UNSET
-    incident_urgency: Union[IncidentUrgency, None, Unset] = UNSET
-    labels: Union[Unset, list[str]] = UNSET
+    link: None | str | Unset = UNSET
+    incident_urgency: IncidentUrgency | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -35,23 +36,19 @@ class CreateHeartbeatInput:
 
         service = self.service
 
-        link: Union[None, Unset, str]
+        link: None | str | Unset
         if isinstance(self.link, Unset):
             link = UNSET
         else:
             link = self.link
 
-        incident_urgency: Union[None, Unset, str]
+        incident_urgency: None | str | Unset
         if isinstance(self.incident_urgency, Unset):
             incident_urgency = UNSET
         elif isinstance(self.incident_urgency, IncidentUrgency):
             incident_urgency = self.incident_urgency.value
         else:
             incident_urgency = self.incident_urgency
-
-        labels: Union[Unset, list[str]] = UNSET
-        if not isinstance(self.labels, Unset):
-            labels = self.labels
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -66,30 +63,28 @@ class CreateHeartbeatInput:
             field_dict["link"] = link
         if incident_urgency is not UNSET:
             field_dict["incident_urgency"] = incident_urgency
-        if labels is not UNSET:
-            field_dict["labels"] = labels
 
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         name = d.pop("name")
 
         description = d.pop("description")
 
         service = d.pop("service")
 
-        def _parse_link(data: object) -> Union[None, Unset, str]:
+        def _parse_link(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         link = _parse_link(d.pop("link", UNSET))
 
-        def _parse_incident_urgency(data: object) -> Union[IncidentUrgency, None, Unset]:
+        def _parse_incident_urgency(data: object) -> IncidentUrgency | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
@@ -100,13 +95,11 @@ class CreateHeartbeatInput:
                 incident_urgency_type_0 = IncidentUrgency(data)
 
                 return incident_urgency_type_0
-            except:  # noqa: E722
+            except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(Union[IncidentUrgency, None, Unset], data)
+            return cast(IncidentUrgency | None | Unset, data)
 
         incident_urgency = _parse_incident_urgency(d.pop("incident_urgency", UNSET))
-
-        labels = cast(list[str], d.pop("labels", UNSET))
 
         create_heartbeat_input = cls(
             name=name,
@@ -114,7 +107,6 @@ class CreateHeartbeatInput:
             service=service,
             link=link,
             incident_urgency=incident_urgency,
-            labels=labels,
         )
 
         create_heartbeat_input.additional_properties = d

@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class IncidentUrgency(str, Enum):
+class IncidentUrgency(StrEnum):
     HIGH = "high"
     LOW = "low"
 

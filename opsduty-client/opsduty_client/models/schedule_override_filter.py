@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import datetime
-from typing import Any, TypeVar, Union, cast
+from collections.abc import Mapping
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
@@ -13,16 +15,16 @@ T = TypeVar("T", bound="ScheduleOverrideFilter")
 class ScheduleOverrideFilter:
     """
     Attributes:
-        since (Union[None, Unset, datetime.datetime]):
-        until (Union[None, Unset, datetime.datetime]):
+        since (datetime.datetime | None | Unset):
+        until (datetime.datetime | None | Unset):
     """
 
-    since: Union[None, Unset, datetime.datetime] = UNSET
-    until: Union[None, Unset, datetime.datetime] = UNSET
+    since: datetime.datetime | None | Unset = UNSET
+    until: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        since: Union[None, Unset, str]
+        since: None | str | Unset
         if isinstance(self.since, Unset):
             since = UNSET
         elif isinstance(self.since, datetime.datetime):
@@ -30,7 +32,7 @@ class ScheduleOverrideFilter:
         else:
             since = self.since
 
-        until: Union[None, Unset, str]
+        until: None | str | Unset
         if isinstance(self.until, Unset):
             until = UNSET
         elif isinstance(self.until, datetime.datetime):
@@ -49,10 +51,10 @@ class ScheduleOverrideFilter:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
 
-        def _parse_since(data: object) -> Union[None, Unset, datetime.datetime]:
+        def _parse_since(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
@@ -60,16 +62,16 @@ class ScheduleOverrideFilter:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                since_type_0 = isoparse(data)
+                since_type_0 = datetime.datetime.fromisoformat(data)
 
                 return since_type_0
-            except:  # noqa: E722
+            except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(Union[None, Unset, datetime.datetime], data)
+            return cast(datetime.datetime | None | Unset, data)
 
         since = _parse_since(d.pop("since", UNSET))
 
-        def _parse_until(data: object) -> Union[None, Unset, datetime.datetime]:
+        def _parse_until(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
@@ -77,12 +79,12 @@ class ScheduleOverrideFilter:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                until_type_0 = isoparse(data)
+                until_type_0 = datetime.datetime.fromisoformat(data)
 
                 return until_type_0
-            except:  # noqa: E722
+            except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(Union[None, Unset, datetime.datetime], data)
+            return cast(datetime.datetime | None | Unset, data)
 
         until = _parse_until(d.pop("until", UNSET))
 

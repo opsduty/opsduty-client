@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import datetime
+from collections.abc import Mapping
 from typing import Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
-from dateutil.parser import isoparse
 
 T = TypeVar("T", bound="ScheduleOverrideInputSchema")
 
@@ -41,13 +43,13 @@ class ScheduleOverrideInputSchema:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         user_id = d.pop("user_id")
 
-        start = isoparse(d.pop("start"))
+        start = datetime.datetime.fromisoformat(d.pop("start"))
 
-        end = isoparse(d.pop("end"))
+        end = datetime.datetime.fromisoformat(d.pop("end"))
 
         schedule_override_input_schema = cls(
             user_id=user_id,

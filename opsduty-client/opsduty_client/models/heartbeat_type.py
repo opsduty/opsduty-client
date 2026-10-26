@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class HeartbeatType(str, Enum):
+class HeartbeatType(StrEnum):
     CRON = "cron"
     INTERVAL = "interval"
 

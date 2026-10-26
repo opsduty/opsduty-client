@@ -9,7 +9,7 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
-openapi-python-client = "^0.23.1"
+openapi-python-client = "^0.29.1"
 pytest = "^8.3.4"
 pytest-asyncio = "^0.25.3"
 ruff = "^0.9.6"
@@ -57,6 +57,9 @@ ignore = [
     # PLR0911 Too many return statements
     "PLR0911",
 ]
+
+[tool.ruff.lint.per-file-ignores]
+"opsduty-client/**" = ["E501"]
 
 [tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "parents"

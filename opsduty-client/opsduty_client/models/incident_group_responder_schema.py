@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import datetime
-from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..models.responder_status import ResponderStatus
 
@@ -18,23 +20,23 @@ class IncidentGroupResponderSchema:
     """
     Attributes:
         id (int):
-        last_notified (Union[None, datetime.datetime]):
+        last_notified (datetime.datetime | None):
         status (ResponderStatus):
-        status_updated_at (Union[None, datetime.datetime]):
+        status_updated_at (datetime.datetime | None):
         user (UserSchema):
     """
 
     id: int
-    last_notified: Union[None, datetime.datetime]
+    last_notified: datetime.datetime | None
     status: ResponderStatus
-    status_updated_at: Union[None, datetime.datetime]
-    user: "UserSchema"
+    status_updated_at: datetime.datetime | None
+    user: UserSchema
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         id = self.id
 
-        last_notified: Union[None, str]
+        last_notified: None | str
         if isinstance(self.last_notified, datetime.datetime):
             last_notified = self.last_notified.isoformat()
         else:
@@ -42,7 +44,7 @@ class IncidentGroupResponderSchema:
 
         status = self.status.value
 
-        status_updated_at: Union[None, str]
+        status_updated_at: None | str
         if isinstance(self.status_updated_at, datetime.datetime):
             status_updated_at = self.status_updated_at.isoformat()
         else:
@@ -65,41 +67,41 @@ class IncidentGroupResponderSchema:
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
-        from ..models.user_schema import UserSchema
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.user_schema import UserSchema  # noqa: PLC0415
 
-        d = src_dict.copy()
+        d = dict(src_dict)
         id = d.pop("id")
 
-        def _parse_last_notified(data: object) -> Union[None, datetime.datetime]:
+        def _parse_last_notified(data: object) -> datetime.datetime | None:
             if data is None:
                 return data
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                last_notified_type_0 = isoparse(data)
+                last_notified_type_0 = datetime.datetime.fromisoformat(data)
 
                 return last_notified_type_0
-            except:  # noqa: E722
+            except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(Union[None, datetime.datetime], data)
+            return cast(datetime.datetime | None, data)
 
         last_notified = _parse_last_notified(d.pop("last_notified"))
 
         status = ResponderStatus(d.pop("status"))
 
-        def _parse_status_updated_at(data: object) -> Union[None, datetime.datetime]:
+        def _parse_status_updated_at(data: object) -> datetime.datetime | None:
             if data is None:
                 return data
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                status_updated_at_type_0 = isoparse(data)
+                status_updated_at_type_0 = datetime.datetime.fromisoformat(data)
 
                 return status_updated_at_type_0
-            except:  # noqa: E722
+            except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(Union[None, datetime.datetime], data)
+            return cast(datetime.datetime | None, data)
 
         status_updated_at = _parse_status_updated_at(d.pop("status_updated_at"))
 

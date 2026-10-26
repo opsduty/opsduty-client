@@ -1,7 +1,12 @@
-from typing import Any, TypeVar, Union, cast
+from __future__ import annotations
+
+import datetime
+from collections.abc import Mapping
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
+from ..models.maintenance_mode import MaintenanceMode
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="ServiceSchema")
@@ -11,30 +16,56 @@ T = TypeVar("T", bound="ServiceSchema")
 class ServiceSchema:
     """
     Attributes:
+        maintenance_mode (MaintenanceMode | None):
+        maintenance_window_start (datetime.datetime | None):
+        maintenance_window_end (datetime.datetime | None):
+        routing_key (str): Key you send events to.
         name (str):
-        id (Union[None, Unset, int]):
-        description (Union[None, Unset, str]):
-        service_type (Union[Unset, str]):  Default: 'technical'.
-        routing_key (Union[Unset, str]):
+        id (int | None | Unset):
+        description (None | str | Unset):
+        service_type (str | Unset):  Default: 'technical'.
     """
 
+    maintenance_mode: MaintenanceMode | None
+    maintenance_window_start: datetime.datetime | None
+    maintenance_window_end: datetime.datetime | None
+    routing_key: str
     name: str
-    id: Union[None, Unset, int] = UNSET
-    description: Union[None, Unset, str] = UNSET
-    service_type: Union[Unset, str] = "technical"
-    routing_key: Union[Unset, str] = UNSET
+    id: int | None | Unset = UNSET
+    description: None | str | Unset = UNSET
+    service_type: str | Unset = "technical"
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        maintenance_mode: None | str
+        if isinstance(self.maintenance_mode, MaintenanceMode):
+            maintenance_mode = self.maintenance_mode.value
+        else:
+            maintenance_mode = self.maintenance_mode
+
+        maintenance_window_start: None | str
+        if isinstance(self.maintenance_window_start, datetime.datetime):
+            maintenance_window_start = self.maintenance_window_start.isoformat()
+        else:
+            maintenance_window_start = self.maintenance_window_start
+
+        maintenance_window_end: None | str
+        if isinstance(self.maintenance_window_end, datetime.datetime):
+            maintenance_window_end = self.maintenance_window_end.isoformat()
+        else:
+            maintenance_window_end = self.maintenance_window_end
+
+        routing_key = self.routing_key
+
         name = self.name
 
-        id: Union[None, Unset, int]
+        id: int | None | Unset
         if isinstance(self.id, Unset):
             id = UNSET
         else:
             id = self.id
 
-        description: Union[None, Unset, str]
+        description: None | str | Unset
         if isinstance(self.description, Unset):
             description = UNSET
         else:
@@ -42,12 +73,14 @@ class ServiceSchema:
 
         service_type = self.service_type
 
-        routing_key = self.routing_key
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "maintenance_mode": maintenance_mode,
+                "maintenance_window_start": maintenance_window_start,
+                "maintenance_window_end": maintenance_window_end,
+                "routing_key": routing_key,
                 "name": name,
             }
         )
@@ -57,44 +90,91 @@ class ServiceSchema:
             field_dict["description"] = description
         if service_type is not UNSET:
             field_dict["service_type"] = service_type
-        if routing_key is not UNSET:
-            field_dict["routing_key"] = routing_key
 
         return field_dict
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
+
+        def _parse_maintenance_mode(data: object) -> MaintenanceMode | None:
+            if data is None:
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                maintenance_mode_type_0 = MaintenanceMode(data)
+
+                return maintenance_mode_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(MaintenanceMode | None, data)
+
+        maintenance_mode = _parse_maintenance_mode(d.pop("maintenance_mode"))
+
+        def _parse_maintenance_window_start(data: object) -> datetime.datetime | None:
+            if data is None:
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                maintenance_window_start_type_0 = datetime.datetime.fromisoformat(data)
+
+                return maintenance_window_start_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None, data)
+
+        maintenance_window_start = _parse_maintenance_window_start(d.pop("maintenance_window_start"))
+
+        def _parse_maintenance_window_end(data: object) -> datetime.datetime | None:
+            if data is None:
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                maintenance_window_end_type_0 = datetime.datetime.fromisoformat(data)
+
+                return maintenance_window_end_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None, data)
+
+        maintenance_window_end = _parse_maintenance_window_end(d.pop("maintenance_window_end"))
+
+        routing_key = d.pop("routing_key")
+
         name = d.pop("name")
 
-        def _parse_id(data: object) -> Union[None, Unset, int]:
+        def _parse_id(data: object) -> int | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, int], data)
+            return cast(int | None | Unset, data)
 
         id = _parse_id(d.pop("id", UNSET))
 
-        def _parse_description(data: object) -> Union[None, Unset, str]:
+        def _parse_description(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         description = _parse_description(d.pop("description", UNSET))
 
         service_type = d.pop("service_type", UNSET)
 
-        routing_key = d.pop("routing_key", UNSET)
-
         service_schema = cls(
+            maintenance_mode=maintenance_mode,
+            maintenance_window_start=maintenance_window_start,
+            maintenance_window_end=maintenance_window_end,
+            routing_key=routing_key,
             name=name,
             id=id,
             description=description,
             service_type=service_type,
-            routing_key=routing_key,
         )
 
         service_schema.additional_properties = d

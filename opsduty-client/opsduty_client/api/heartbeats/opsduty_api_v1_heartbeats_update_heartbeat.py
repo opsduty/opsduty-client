@@ -1,11 +1,15 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
+from urllib.parse import quote
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.heartbeat_schema import HeartbeatSchema
+from ...models.opsduty_api_v1_heartbeats_update_heartbeat_response_401 import OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse401
+from ...models.opsduty_api_v1_heartbeats_update_heartbeat_response_404 import OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse404
+from ...models.opsduty_api_v1_heartbeats_update_heartbeat_response_422 import OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse422
 from ...models.update_heartbeat_input import UpdateHeartbeatInput
 from ...types import Response
 
@@ -20,31 +24,50 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "put",
         "url": "/api/v1/heartbeats/{heartbeat_id}/".format(
-            heartbeat_id=heartbeat_id,
+            heartbeat_id=quote(str(heartbeat_id), safe=""),
         ),
     }
 
-    _body = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
-    _kwargs["json"] = _body
     headers["Content-Type"] = "application/json"
 
     _kwargs["headers"] = headers
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[HeartbeatSchema]:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> HeartbeatSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse422 | None:
     if response.status_code == 200:
         response_200 = HeartbeatSchema.from_dict(response.json())
 
         return response_200
+
+    if response.status_code == 401:
+        response_401 = OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse401.from_dict(response.json())
+
+        return response_401
+
+    if response.status_code == 404:
+        response_404 = OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse404.from_dict(response.json())
+
+        return response_404
+
+    if response.status_code == 422:
+        response_422 = OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse422.from_dict(response.json())
+
+        return response_422
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[HeartbeatSchema]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[HeartbeatSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse422]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -58,8 +81,14 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: UpdateHeartbeatInput,
-) -> Response[HeartbeatSchema]:
-    """Update Heartbeat
+) -> Response[HeartbeatSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse422]:
+    """Update a heartbeat
+
+     Change a heartbeat's details.
+
+    Every field is replaced, so send the whole heartbeat. This covers what the
+    job is and who hears about it; the schedule it checks in on lives on each
+    environment.
 
     Args:
         heartbeat_id (int):
@@ -70,7 +99,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HeartbeatSchema]
+        Response[HeartbeatSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse422]
     """
 
     kwargs = _get_kwargs(
@@ -90,8 +119,14 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: UpdateHeartbeatInput,
-) -> Optional[HeartbeatSchema]:
-    """Update Heartbeat
+) -> HeartbeatSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse422 | None:
+    """Update a heartbeat
+
+     Change a heartbeat's details.
+
+    Every field is replaced, so send the whole heartbeat. This covers what the
+    job is and who hears about it; the schedule it checks in on lives on each
+    environment.
 
     Args:
         heartbeat_id (int):
@@ -102,7 +137,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HeartbeatSchema
+        HeartbeatSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse422
     """
 
     return sync_detailed(
@@ -117,8 +152,14 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: UpdateHeartbeatInput,
-) -> Response[HeartbeatSchema]:
-    """Update Heartbeat
+) -> Response[HeartbeatSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse422]:
+    """Update a heartbeat
+
+     Change a heartbeat's details.
+
+    Every field is replaced, so send the whole heartbeat. This covers what the
+    job is and who hears about it; the schedule it checks in on lives on each
+    environment.
 
     Args:
         heartbeat_id (int):
@@ -129,7 +170,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HeartbeatSchema]
+        Response[HeartbeatSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse422]
     """
 
     kwargs = _get_kwargs(
@@ -147,8 +188,14 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: UpdateHeartbeatInput,
-) -> Optional[HeartbeatSchema]:
-    """Update Heartbeat
+) -> HeartbeatSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse422 | None:
+    """Update a heartbeat
+
+     Change a heartbeat's details.
+
+    Every field is replaced, so send the whole heartbeat. This covers what the
+    job is and who hears about it; the schedule it checks in on lives on each
+    environment.
 
     Args:
         heartbeat_id (int):
@@ -159,7 +206,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HeartbeatSchema
+        HeartbeatSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatResponse422
     """
 
     return (

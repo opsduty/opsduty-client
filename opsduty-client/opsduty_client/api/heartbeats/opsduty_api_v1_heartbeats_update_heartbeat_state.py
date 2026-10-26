@@ -1,5 +1,6 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
+from urllib.parse import quote
 
 import httpx
 
@@ -7,6 +8,9 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.cron_heartbeat_state_schema import CronHeartbeatStateSchema
 from ...models.interval_heartbeat_state_schema import IntervalHeartbeatStateSchema
+from ...models.opsduty_api_v1_heartbeats_update_heartbeat_state_response_401 import OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse401
+from ...models.opsduty_api_v1_heartbeats_update_heartbeat_state_response_404 import OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse404
+from ...models.opsduty_api_v1_heartbeats_update_heartbeat_state_response_422 import OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse422
 from ...models.update_heartbeat_state_input import UpdateHeartbeatStateInput
 from ...types import Response
 
@@ -21,30 +25,31 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "put",
         "url": "/api/v1/heartbeats/states/{heartbeat_state_id}/".format(
-            heartbeat_state_id=heartbeat_state_id,
+            heartbeat_state_id=quote(str(heartbeat_state_id), safe=""),
         ),
     }
 
-    _body = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
-    _kwargs["json"] = _body
     headers["Content-Type"] = "application/json"
 
     _kwargs["headers"] = headers
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Union["CronHeartbeatStateSchema", "IntervalHeartbeatStateSchema"]]:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> CronHeartbeatStateSchema | IntervalHeartbeatStateSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse422 | None:
     if response.status_code == 200:
 
-        def _parse_response_200(data: object) -> Union["CronHeartbeatStateSchema", "IntervalHeartbeatStateSchema"]:
+        def _parse_response_200(data: object) -> CronHeartbeatStateSchema | IntervalHeartbeatStateSchema:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
                 response_200_type_0 = CronHeartbeatStateSchema.from_dict(data)
 
                 return response_200_type_0
-            except:  # noqa: E722
+            except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             if not isinstance(data, dict):
                 raise TypeError()
@@ -55,13 +60,31 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         response_200 = _parse_response_200(response.json())
 
         return response_200
+
+    if response.status_code == 401:
+        response_401 = OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse401.from_dict(response.json())
+
+        return response_401
+
+    if response.status_code == 404:
+        response_404 = OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse404.from_dict(response.json())
+
+        return response_404
+
+    if response.status_code == 422:
+        response_422 = OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse422.from_dict(response.json())
+
+        return response_422
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[Union["CronHeartbeatStateSchema", "IntervalHeartbeatStateSchema"]]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[CronHeartbeatStateSchema | IntervalHeartbeatStateSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse422]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -75,8 +98,14 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: UpdateHeartbeatStateInput,
-) -> Response[Union["CronHeartbeatStateSchema", "IntervalHeartbeatStateSchema"]]:
-    """Update Heartbeat State
+) -> Response[CronHeartbeatStateSchema | IntervalHeartbeatStateSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse422]:
+    """Update an environment on a heartbeat
+
+     Change what one environment expects, or stop it alerting.
+
+    Every field is replaced, so send the whole state and not only the parts
+    you are changing. Set `muted` while a job is knowingly off, which keeps
+    the environment and its history but stops it raising incidents.
 
     Args:
         heartbeat_state_id (int):
@@ -87,7 +116,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union['CronHeartbeatStateSchema', 'IntervalHeartbeatStateSchema']]
+        Response[CronHeartbeatStateSchema | IntervalHeartbeatStateSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse422]
     """
 
     kwargs = _get_kwargs(
@@ -107,8 +136,14 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: UpdateHeartbeatStateInput,
-) -> Optional[Union["CronHeartbeatStateSchema", "IntervalHeartbeatStateSchema"]]:
-    """Update Heartbeat State
+) -> CronHeartbeatStateSchema | IntervalHeartbeatStateSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse422 | None:
+    """Update an environment on a heartbeat
+
+     Change what one environment expects, or stop it alerting.
+
+    Every field is replaced, so send the whole state and not only the parts
+    you are changing. Set `muted` while a job is knowingly off, which keeps
+    the environment and its history but stops it raising incidents.
 
     Args:
         heartbeat_state_id (int):
@@ -119,7 +154,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union['CronHeartbeatStateSchema', 'IntervalHeartbeatStateSchema']
+        CronHeartbeatStateSchema | IntervalHeartbeatStateSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse422
     """
 
     return sync_detailed(
@@ -134,8 +169,14 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: UpdateHeartbeatStateInput,
-) -> Response[Union["CronHeartbeatStateSchema", "IntervalHeartbeatStateSchema"]]:
-    """Update Heartbeat State
+) -> Response[CronHeartbeatStateSchema | IntervalHeartbeatStateSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse422]:
+    """Update an environment on a heartbeat
+
+     Change what one environment expects, or stop it alerting.
+
+    Every field is replaced, so send the whole state and not only the parts
+    you are changing. Set `muted` while a job is knowingly off, which keeps
+    the environment and its history but stops it raising incidents.
 
     Args:
         heartbeat_state_id (int):
@@ -146,7 +187,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union['CronHeartbeatStateSchema', 'IntervalHeartbeatStateSchema']]
+        Response[CronHeartbeatStateSchema | IntervalHeartbeatStateSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse422]
     """
 
     kwargs = _get_kwargs(
@@ -164,8 +205,14 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: UpdateHeartbeatStateInput,
-) -> Optional[Union["CronHeartbeatStateSchema", "IntervalHeartbeatStateSchema"]]:
-    """Update Heartbeat State
+) -> CronHeartbeatStateSchema | IntervalHeartbeatStateSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse422 | None:
+    """Update an environment on a heartbeat
+
+     Change what one environment expects, or stop it alerting.
+
+    Every field is replaced, so send the whole state and not only the parts
+    you are changing. Set `muted` while a job is knowingly off, which keeps
+    the environment and its history but stops it raising incidents.
 
     Args:
         heartbeat_state_id (int):
@@ -176,7 +223,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union['CronHeartbeatStateSchema', 'IntervalHeartbeatStateSchema']
+        CronHeartbeatStateSchema | IntervalHeartbeatStateSchema | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse401 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse404 | OpsdutyApiV1HeartbeatsUpdateHeartbeatStateResponse422
     """
 
     return (

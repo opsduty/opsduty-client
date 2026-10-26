@@ -1,5 +1,5 @@
 # opsduty-client
-A client library for accessing opsduty
+<openapi_python_client.schema.untrusted_string.UntrustedString object at 0x107fc2660>
 
 ## Usage
 First, create a client:

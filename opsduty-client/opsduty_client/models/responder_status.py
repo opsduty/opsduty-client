@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ResponderStatus(str, Enum):
+class ResponderStatus(StrEnum):
     ACTIVE = "active"
     PENDING = "pending"
 
